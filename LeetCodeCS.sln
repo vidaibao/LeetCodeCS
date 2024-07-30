@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Array", "Array\Array.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sorting", "Sorting\Sorting.csproj", "{0009359C-3FBE-4835-AD67-A040A0F49D60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringSolutions", "StringSolutions\StringSolutions.csproj", "{9062027D-518C-44FF-98B0-C57DE80B66BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0009359C-3FBE-4835-AD67-A040A0F49D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0009359C-3FBE-4835-AD67-A040A0F49D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0009359C-3FBE-4835-AD67-A040A0F49D60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9062027D-518C-44FF-98B0-C57DE80B66BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9062027D-518C-44FF-98B0-C57DE80B66BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9062027D-518C-44FF-98B0-C57DE80B66BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9062027D-518C-44FF-98B0-C57DE80B66BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
