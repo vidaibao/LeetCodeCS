@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 
 namespace Array
 {
@@ -9,9 +10,42 @@ namespace Array
         {
             //RotateArray_189();
             //RemoveDuplicatesFromeSortedArray_26();
-            RemoveDuplicatesFromSortedArray2_80();
+            //RemoveDuplicatesFromSortedArray2_80();
+            MatrixCellsInDistanceOrder_1030();
 
         }
+
+
+
+
+        private static void MatrixCellsInDistanceOrder_1030()
+        {
+            int rows = 2, cols = 2, rCenter = 0, cCenter = 1;
+            var re = AllCellsDistOrder(rows, cols, rCenter, cCenter);
+            foreach (var cell in re)
+            {
+                Console.WriteLine(string.Join(", ", cell));
+            }
+        }
+        static int[][] AllCellsDistOrder(int rows, int cols, int rCenter, int cCenter)
+        {
+            List<int[]> result = new List<int[]>();
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < cols; c++)
+                {
+                    result.Add(new int[] { r, c });
+                }
+            }
+            //result.OrderBy( x => Math.Abs(x[0] - rCenter) + Math.Abs(x[1] - cCenter));
+            result.Sort( (a, b) =>
+                                Math.Abs(a[0] - rCenter) + Math.Abs(a[1] - cCenter) -
+                                (Math.Abs(b[0] - rCenter) + Math.Abs(b[1] - cCenter)) 
+                        );
+            return result.ToArray();
+        }
+
+
 
         private static void RemoveDuplicatesFromSortedArray2_80()
         {
