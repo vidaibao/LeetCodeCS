@@ -3,6 +3,7 @@
 
 
 
+using System;
 using System.Collections;
 
 namespace StringSolutions
@@ -17,9 +18,239 @@ namespace StringSolutions
             //CellInRangeExcelSheet_2194();
             //LongestCommonPrefix_14();
             //Find1OccurrenceInString_28();
-            ValidPalindrome_125();
+            //ValidPalindrome_125();
+            //IsSubsequence_392();
+            //NumberOfMatchingSubsequences_792();
+            //CountVowelSubstringsOfAString_2062();//HashSet
+            NumberOfSubstringWithOnly1s_1513();
 
         }
+
+
+
+
+        private static void NumberOfSubstringWithOnly1s_1513()
+        {
+            string s = "0110111";
+            Console.WriteLine(NumSub(s));
+        }
+        // Given a binary string s, return the number of substrings with all characters 1's. Since the answer may be too large, return it modulo 109 + 7.
+        static public int NumSub(string s)
+        {
+            long result = 0;
+            for (var i = 0; i < s.Length; i++)
+            {
+                if (s[i] == '1')
+                {
+                    long counter = 0;
+                    while (i < s.Length && s[i] == '1')
+                    {
+                        counter += 1;
+                        i += 1;
+                    }
+                    result += counter * (counter + 1) / 2;
+                    i -= 1;
+                }
+            }
+            return (int)(result % 1_000_000_007);
+        }
+        static int NumSub02(string s)
+        {
+            int count = 0; int result = 0; int mod = 1_000_000_007;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == '1')
+                {
+                    count++;
+                    result = (result + count) % mod;
+                }
+                else
+                {
+                    count = 0;
+                }
+            }
+            return result;
+        }
+        static int NumSub01(string s)
+        {
+            Dictionary<string,int> map = new Dictionary<string, int>();
+            int step = 1;
+            for (int i = 0; i < s.Length; i += step)
+            {
+                string currentOne = ""; 
+                for (int j = i; j < s.Length && s[j] == '1'; j++)
+                {
+                    currentOne += s[j];
+                }
+                if (currentOne != "")
+                {
+                    if (map.ContainsKey(currentOne))
+                        map[currentOne]++;
+                    else
+                        map.Add(currentOne, 1);
+                    
+                    step = currentOne.Length;
+                }
+                else
+                {
+                    step = 1;
+                }
+            }
+            
+            // 
+            int number = 0; int result = 0; int mod = 1_000_000_007;
+            // Each segment of length k contributes k×(k + 1) substrings
+            foreach (var ones in map.Keys)
+            {
+                int k = ones.Length; //1
+                number = k * (k + 1) / 2 * map[ones];
+                result += number % mod;
+            }
+            return result;
+        }
+
+        static int NumSub00(string s)
+        {
+            int num = 0;
+            for (int n = 1; n <= s.Length; n++)
+            {
+                string ones = new string('1', n);
+                for (int i = 0; i < s.Length; i++)
+                {
+                    string currentOne = "";
+                    for (int j = i; j < s.Length && s[j] == '1'; j++)
+                    {
+                        currentOne += s[j];
+                        if (currentOne.Length == ones.Length) num++;
+                    }
+                }
+            }
+
+            return num % 1_000_000_007;
+        }
+
+
+
+        private static void CountVowelSubstringsOfAString_2062()
+        {
+            string word = "cuaieuouac";
+            //string word = "aeiouu";
+            Console.WriteLine(CountVowelSubstrings(word));
+        }
+        static int CountVowelSubstrings(string word)
+        {
+            int count = 0;
+            HashSet<char> vowels = new HashSet<char> { 'a', 'i', 'u', 'e', 'o' };
+            for (int i = 0; i < word.Length; i++)
+            {
+                if (vowels.Contains(word[i]))
+                {
+                    HashSet<char> currentVowels = new HashSet<char>();
+                    for (int j = i; j < word.Length && vowels.Contains(word[j]); j++) // conditions
+                    {
+                        currentVowels.Add(word[j]);
+                        if (currentVowels.Count == 5) count++; // All vowels found
+                    }
+                }
+            }
+            return count;
+        }
+        static int CountVowelSubstrings00(string word)
+        {
+            if (!CheckAllFive(word)) return 0;
+
+            int count = 0;
+            string vowel = "aeiou";
+            int r = 0; int l = 0; 
+            bool flag = false;
+            while (r < word.Length)
+            {
+                char key = word[r];
+                if (vowel.Contains(key))
+                {
+                    r++; flag = true;
+                }
+                else
+                {
+                    r++;
+                    if (flag) l = r;
+                    else l++;
+                    flag = false;
+                }
+                if (r < word.Length && r - l + 1 >= 5)
+                {
+                    if (CheckAllFive(word.Substring(l, r-l+1)))
+                    {
+                        count++;
+                    }
+                }
+            }
+            
+            return count;
+        }
+        static bool CheckAllFive(string s)
+        {
+            string vowel = "aeiou";
+            for (int i = 0; i < vowel.Length; i++)
+            {
+                if (!s.Contains(vowel[i])) return false;
+            }
+            return true;
+        }
+
+
+
+
+
+        private static void NumberOfMatchingSubsequences_792()
+        {
+            string s = "qlhxagxdqh";
+            string[] words = ["qlhxagxdq", "qlhxagxdq", "lhyiftwtut", "yfzwraahab"];
+            //string s = "abcde";
+            //string[] words = ["a", "bb", "acd", "ace"];
+            Console.WriteLine(NumMatchingSubseq(s, words));
+        }
+        static int NumMatchingSubseq(string s, string[] words)
+        {
+            Dictionary<string,int> map = new Dictionary<string,int>();
+            foreach (var w in words)
+            {
+                if (map.ContainsKey(w))
+                    map[w]++;
+                else map[w] = 1;
+            }
+            int count = 0;
+            foreach (KeyValuePair<string,int> w in map) // same time with (string w in map.Keys)
+            {
+                if (IsSubsequence(w.Key, s)) count += w.Value;
+            }
+            return count;
+        }
+
+
+
+
+        private static void IsSubsequence_392()
+        {
+            string s = "abc", t = "dahbgdc";
+            Console.WriteLine(IsSubsequence(s, t));
+        }
+        static bool IsSubsequence(string s, string t)
+        {
+            //if (t.Length < s.Length) return false;
+            //else if (t.Length == 0 || s.Length == 0) return true;
+            //else if (t.Length == s.Length) return t == s;
+
+            int pt = 0; int ps = 0;
+            while (pt < t.Length && ps < s.Length)
+            {
+                if (s[ps] == t[pt]) ps++;
+                pt++;
+            }
+            return ps == s.Length;
+        }
+
+
 
         private static void ValidPalindrome_125()
         {
