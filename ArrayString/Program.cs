@@ -24,12 +24,83 @@
 
             /*========== MEDIUM ============*/
             //Integer2Roman_12();
-            JumpGame_55();
+            //JumpGame_55();
+            JumpGame2_45();
 
 
             /*=========== HARD =============*/
             //IntegerToEnglishWords_273();
         }
+
+
+
+
+
+
+        private static void JumpGame2_45()
+        {
+            int[] nums = [2, 3, 1, 1, 4];
+            Console.WriteLine(Jump2(nums));
+        }
+        /*
+         You are given a 0-indexed array of integers nums of length n. You are initially positioned at nums[0].
+        Each element nums[i] represents the maximum length of a forward jump from index i. In other words, if you are at nums[i], you can jump to any nums[i + j] where:
+
+        0 <= j <= nums[i] and
+        i + j < n
+        Return the minimum number of jumps to reach nums[n - 1]. The test cases are generated such that you can reach nums[n - 1].
+
+        Example 1:
+        Input: nums = [2,3,1,1,4]
+        Output: 2
+        Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.
+        Example 2:
+        Input: nums = [2,3,0,1,4]
+        Output: 2
+
+        Constraints:
+        1 <= nums.length <= 104
+        0 <= nums[i] <= 1000
+        It's guaranteed that you can reach nums[n - 1].
+         */
+        static int Jump2(int[] nums)
+        {
+            if (nums.Length <= 1) return 0;
+
+            int jumps = 0;
+            int currentEnd = 0;
+            int farthest = 0;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                farthest = Math.Max(farthest, i + nums[i]);
+                if (i == currentEnd) //reach the end of the current jump
+                {
+                    jumps++;
+                    currentEnd = farthest;
+
+                    if (currentEnd >= nums.Length - 1) break;//beyond or at the last index
+                }
+            }
+            return jumps;
+        }
+        static int Jump200(int[] nums)
+        {
+            if (nums.Length <= 1) return 0;
+
+            int[] dp = new int[nums.Length];
+            dp[0] = 1; // minimum number of jumps to reach nums[0]
+            for (int i = 0; i < nums.Length; i++)
+            {
+                for (int j = 1; j <= nums[i]; j++)
+                {
+                    dp[i + j] = Math.Min(dp[i] + 1, dp[i + j]);
+                }
+            }
+
+            return 0;
+        }
+
 
 
 
