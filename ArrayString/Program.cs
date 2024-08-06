@@ -25,14 +25,215 @@
             /*========== MEDIUM ============*/
             //Integer2Roman_12();
             //JumpGame_55();
-            JumpGame2_45();
-
+            //JumpGame2_45();
+            //H_Index_274();
+            //ProductOfArrayExceptSelf_238();
+            //MaximumProductSubarray_152();
+            MaximumSubarray_53();
 
             /*=========== HARD =============*/
             //IntegerToEnglishWords_273();
         }
 
 
+
+
+
+
+        private static void MaximumSubarray_53()
+        {
+            int[] nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+            Console.WriteLine(MaxSubArray(nums));
+        }
+        static int MaxSubArray(int[] nums)
+        {
+            if (nums.Length == 1) return nums[0];
+
+            int currentMax = nums[0], globalMax = nums[0];
+            for (int i = 1; i < nums.Length; i++)
+            {
+                currentMax = Math.Max(currentMax + nums[i], nums[i]);
+                globalMax = Math.Max(globalMax, currentMax);
+            }
+
+            return globalMax;
+        }
+
+
+
+
+
+        private static void MaximumProductSubarray_152()
+        {
+            int[] nums = [2, 3, -2, 4];//6
+            //int[] nums = [-2, 0, -1]; //0
+            Console.WriteLine(MaxProduct(nums));
+        }
+
+        /*
+         Given an integer array nums, find a subarray (contiguous non-empty sequence) that has the largest product, and return the product.
+        The test cases are generated so that the answer will fit in a 32-bit integer.
+         */
+
+        public static int MaxProduct(int[] nums)//2 pointers
+        {
+            int maxpro = Int32.MinValue, right = 1, left = 1;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (right == 0) right = 1;
+                if (left == 0)  left = 1;
+                
+                right *= nums[i];
+                left *= nums[nums.Length - i - 1];
+                maxpro = Math.Max(maxpro, Math.Max(left, right));
+            }
+            return maxpro;
+        }
+        private static int MaxProduct01(int[] nums)//DP
+        {
+            if (nums.Length == 1) return nums[0];
+
+            int result = nums[0], max = nums[0], min = nums[0];
+
+            for (int i = 1; i < nums.Length; i++)
+            {
+                int num = nums[i];
+                if (num < 0)
+                {
+                    //int temp = max; max = min; min = temp;
+                    (max, min) = (min, max);
+                }
+                max = Math.Max(num, max * num);
+                min = Math.Min(num, min * num);
+
+                result = Math.Max(result, max);
+            }
+
+            return result;
+        }
+
+
+
+
+
+        private static void ProductOfArrayExceptSelf_238()
+        {
+            int[] nums = [-1, 1, 0, -3, 3];
+            //int[] nums = [1, 2, 3, 4];
+            Console.WriteLine(string.Join(", ", ProductExceptSelf(nums)));
+        }
+        static int[] ProductExceptSelf(int[] nums)
+        {
+            if (nums.Length == 0) return nums;
+
+            int n = nums.Length;
+            int[] re = new int[n];
+            re[0] = 1;
+            for (int i = 1; i < n; i++)
+            {
+                re[i] = re[i - 1] * nums[i - 1];
+            }
+
+            int right = 1;
+            for (int i = n - 2; i >= 0; i--)//???
+            {
+                right *= nums[i + 1];
+                re[i] *= right;
+            }
+            return re;
+        }
+        // 1  2  3  4
+        // ----------
+        // 1  1  2  6
+        // 24 12 4  1  
+        // ----------
+        // 24 12 8. 6
+        static int[] ProductExceptSelf00(int[] nums)
+        {
+            int[] products = new int[nums.Length];
+            int product = 1; int count0 = 0; int index0 = -1;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] != 0) product *= nums[i];
+                else { count0++; index0 = i; }
+            }
+
+            if (count0 > 1)
+            {
+                return products;
+            }
+            else if (count0 == 1)
+            {
+                products[index0] = product;
+                return products;
+            }
+            
+            for (int i = 0; i < nums.Length; i++)
+            {
+                products[i] = product / nums[i];
+            }
+            return products;
+        }
+
+
+
+
+
+        private static void H_Index_274()
+        {
+            int[] citations = [1, 3, 1];
+            //int[] citations = [3, 0, 6, 1, 5];
+            Console.WriteLine(HIndex(citations));
+        }
+        // requirements: find the maximum h, such that at least h number of papers, each one is cited at least h times. If h is largers, it may not be enough number of papers to be cited at least that many times
+
+        // idea: binary search (reference: LeJas)
+        // do binary search, each time check citations[mid]
+        // case 1: citations[mid] == len - mid -> meaning there are citations[mid] papers that have at least citations[mid] citations
+        // case 2: citations[mid] > len - mid -> meaning there are citations[mid] papers that have more than citations[mid] citations, so should containue doing the binary search in the left
+        // case 3: citations[mid] < len - mid -> meaning we should continue searching in the right side
+        // after the iteration, it is guaranteed that right + 1 is the one we need to find (e.g. len (right + 1)) , that that number of papers have at least len - (right + 1) citations
+
+        // time: O(logn) - binary search
+        // space: O(1)
+        // run:
+
+
+
+        public int HIndex01(int[] citations)
+        {
+            int n = citations.Length, left = 0, right = n - 1, mid;
+
+            while (left <= right)
+            {
+                mid = left + (right - left) / 2;
+
+                if (citations[mid] >= n - mid)
+                {
+                    right = mid - 1;
+                }
+                else
+                {
+                    left = mid + 1;
+                }
+            }
+
+            return n - left;
+        }
+        static int HIndex(int[] citations)
+        {
+            Array.Sort(citations, (a, b) => b.CompareTo(a));
+            int hIndex = 0;
+            for (int i = 0; i < citations.Length; i++) 
+            {
+                if (citations[i] >= i + 1)
+                {
+                    hIndex = i + 1;
+                }
+                else break;
+            }
+            return hIndex;
+        }
 
 
 
