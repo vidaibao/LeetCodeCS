@@ -1,4 +1,6 @@
-﻿namespace ArrayString
+﻿using System.Text;
+
+namespace ArrayString
 {
     internal class Program
     {
@@ -22,6 +24,9 @@
             //RemoveDuplicatesFromSortedArray2_80();
             //MatrixCellsInDistanceOrder_1030();
 
+            //DegreeOfAnArray_697();
+
+
             /*========== MEDIUM ============*/
             //Integer2Roman_12();
             //JumpGame_55();
@@ -29,12 +34,209 @@
             //H_Index_274();
             //ProductOfArrayExceptSelf_238();
             //MaximumProductSubarray_152();
-            MaximumSubarray_53();
+            //MaximumSubarray_53();
+            //GasStation_134();
+            //ReverseWordsString_151();
+            //ZigzagConversion_6();
+
 
             /*=========== HARD =============*/
             //IntegerToEnglishWords_273();
+            Candy_135();
+
         }
 
+        private static void Candy_135()
+        {
+            int[] ratings = [1, 0, 2];
+            Console.WriteLine(Candy(ratings));
+        }
+        static int Candy(int[] ratings)
+        {
+            return 0;
+        }
+
+
+
+
+
+        private static void ZigzagConversion_6()
+        {
+            string s = "PAYPALISHIRING";//"PAHNAPLSIIGYIR"
+            int numRows = 3;
+            Console.WriteLine(Convert(s, numRows));
+        }
+        static string Convert(string s, int numRows)
+        {
+            if (numRows == 1) return s;
+
+            var rows = new List<StringBuilder>();
+            for (int i = 0; i < Math.Min(numRows, s.Length); i++)
+            {
+                rows.Add(new StringBuilder());
+            }
+
+            int currentRow = 0;
+            bool goingDown = false;
+            foreach (var c in s)
+            {
+                rows[currentRow].Append(c);
+                if (currentRow == 0 || currentRow == numRows - 1)
+                {
+                    goingDown = !goingDown;
+                }
+                currentRow += goingDown ? 1 : -1 ;
+            }
+
+            var ret = new StringBuilder();
+            foreach (var r in rows)
+            {
+                ret.Append(r.ToString());
+            }
+            return ret.ToString();
+        }
+        static string Convert00(string s, int numRows)
+        {
+
+            int col = ((numRows - 2) + 1) * s.Length / (numRows + (numRows - 2));
+            int remainder = s.Length % (numRows + (numRows - 2));
+            if (0 < remainder && remainder <= numRows)
+            {
+                col++;
+            }
+            else if (numRows < remainder)
+            {
+                col += (remainder - numRows);
+            }
+            char[,] map = new char[numRows, col];
+            
+
+            int i = 0; int c = 0;
+            while (i < s.Length)
+            {
+                int j = i % (numRows + (numRows - 2));
+                if (j < numRows)
+                {
+                    map[j, c] = s[i];
+                }
+                i++;
+            }
+            return s;
+        }
+
+
+
+
+
+        private static void ReverseWordsString_151()
+        {
+            string s = "the sky is blue"; //"blue is sky the"
+            Console.WriteLine(ReverseWords(s));
+        }
+        static string ReverseWords(string s)
+        {
+            string inputStr = s.Trim();
+            var str = inputStr.Split(" ", StringSplitOptions.RemoveEmptyEntries);//*
+            StringBuilder sb = new StringBuilder();
+            for (int i = str.Length - 1; i >= 0; i--)
+            {
+                sb.Append(str[i]).Append(" ");
+            }
+            return sb.ToString().TrimEnd();
+        }
+        static string ReverseWords01(string s)
+        {
+            Stack<string> stack = new Stack<string>();
+            List<char> chars = new List<char>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] != ' ')
+                {
+                    chars.Add(s[i]);
+                }
+                else if (s[i] == ' ' && chars.Count > 0)
+                {
+                    stack.Push(new string(chars.ToArray()));
+                    chars.Clear();
+                }
+            }
+            if (chars.Count > 0) stack.Push(new string(chars.ToArray()));
+            // 
+            s = "";
+            while (stack.Count > 0)
+            {
+                s += stack.Pop();
+                if (stack.Count > 0) s += " ";
+            }
+            return s;
+        }
+
+
+
+
+
+        private static void GasStation_134()
+        {
+            int[] gas = [4, 5, 3, 1, 4], cost = [5, 4, 3, 4, 2];//-1
+            //int[] gas = [ 2, 3, 4 ], cost = [3, 4, 3];//-1
+            //int[] gas = [1, 2, 3, 4, 5], cost = [3, 4, 5, 1, 2];//3
+            Console.WriteLine(CanCompleteCircuit(gas, cost));
+        }
+
+        static int CanCompleteCircuit(int[] gas, int[] cost)
+        {
+            int total_tank = 0;
+            int curr_tank = 0;
+            int starting_station = 0;
+
+            for (int i = 0; i < gas.Length; i++)
+            {
+                total_tank += gas[i] - cost[i];//**
+                curr_tank += gas[i] - cost[i];
+                // If one couldn't get here,
+                if (curr_tank < 0)
+                {
+                    // Pick up the next station as the starting one.
+                    starting_station = i + 1;
+                    // Start with an empty tank.
+                    curr_tank = 0;
+                }
+            }
+
+            return total_tank >= 0 ? starting_station : -1;
+        }
+        static int CanCompleteCircuit01(int[] gas, int[] cost)//2800ms
+        {
+            int n = gas.Length;
+            int tank = 0; 
+            for (int i = 0; i < n; i++)
+            {
+                int station = i; int count = 1;
+                tank = gas[station];//fill up
+                while (tank >= cost[station] && count <= n)//not enough to travel
+                {
+                    if (tank - cost[station] == 0) break;
+                    tank -= cost[station];//cost in this station
+                    station = ++station % n;//next station index
+                    tank += gas[station];// fill up in next station
+                    count++;
+                }
+                if (count >= n && tank >= cost[station])
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private static void DegreeOfAnArray_697()
+        {
+            throw new NotImplementedException();
+        }
+        static int FindShortestSubArray(int[] nums)
+        {
+            return 0;
+        }
 
 
 
@@ -52,7 +254,7 @@
             int currentMax = nums[0], globalMax = nums[0];
             for (int i = 1; i < nums.Length; i++)
             {
-                currentMax = Math.Max(currentMax + nums[i], nums[i]);
+                currentMax = Math.Max(currentMax + nums[i], nums[i]);//*
                 globalMax = Math.Max(globalMax, currentMax);
             }
 
@@ -101,7 +303,7 @@
                 if (num < 0)
                 {
                     //int temp = max; max = min; min = temp;
-                    (max, min) = (min, max);
+                    (max, min) = (min, max);//*
                 }
                 max = Math.Max(num, max * num);
                 min = Math.Min(num, min * num);
@@ -1012,7 +1214,7 @@
         {
             if (strs.Length == 1) return strs[0];
 
-            string pre = strs[0]; bool flag = false;
+            string pre = strs[0]; //bool flag = false;
             for (int j = 0; j < pre.Length; j++)
             {
                 for (int i = 1; i < strs.Length; i++)
