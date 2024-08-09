@@ -7,31 +7,33 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DP", "DP\DP.csproj", "{82B3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sorting", "Sorting\Sorting.csproj", "{0009359C-3FBE-4835-AD67-A040A0F49D60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashMapping", "HashMapping\HashMapping.csproj", "{5CEBE838-F697-4D9F-AF8E-5CD1BED4D8DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HashMapping", "HashMapping\HashMapping.csproj", "{5CEBE838-F697-4D9F-AF8E-5CD1BED4D8DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArrayString", "ArrayString\ArrayString.csproj", "{E8D3F1F4-F71A-48E3-A202-4C02F7785049}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrayString", "ArrayString\ArrayString.csproj", "{E8D3F1F4-F71A-48E3-A202-4C02F7785049}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoPointers", "TwoPointers\TwoPointers.csproj", "{BFFE3F3C-0FCD-4E32-912B-F75A51EBBC1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwoPointers", "TwoPointers\TwoPointers.csproj", "{BFFE3F3C-0FCD-4E32-912B-F75A51EBBC1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matrix", "Matrix\Matrix.csproj", "{3BCD7F9B-4D84-4BF0-A867-58DAC1E02FBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Matrix", "Matrix\Matrix.csproj", "{3BCD7F9B-4D84-4BF0-A867-58DAC1E02FBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlidingWindow", "SlidingWindow\SlidingWindow.csproj", "{A865D010-9E5B-4519-96E1-42E2DE21144F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlidingWindow", "SlidingWindow\SlidingWindow.csproj", "{A865D010-9E5B-4519-96E1-42E2DE21144F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intervals", "Intervals\Intervals.csproj", "{A6A6139B-C9BF-470C-AC8C-88747E10C543}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intervals", "Intervals\Intervals.csproj", "{A6A6139B-C9BF-470C-AC8C-88747E10C543}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stack", "Stack\Stack.csproj", "{3E28C973-D6AE-436E-82D3-32BB96D45279}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stack", "Stack\Stack.csproj", "{3E28C973-D6AE-436E-82D3-32BB96D45279}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkedList", "LinkedList\LinkedList.csproj", "{4E758E8F-F58A-41DA-A073-1D2D3CF056EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkedList", "LinkedList\LinkedList.csproj", "{4E758E8F-F58A-41DA-A073-1D2D3CF056EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryTreeGeneral", "BinaryTreeGeneral\BinaryTreeGeneral.csproj", "{0EDEBAB7-864E-42DE-95C2-01EEC9484F4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryTreeGeneral", "BinaryTreeGeneral\BinaryTreeGeneral.csproj", "{0EDEBAB7-864E-42DE-95C2-01EEC9484F4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryTreeBFS", "BinaryTreeBFS\BinaryTreeBFS.csproj", "{891C9FBD-F993-4497-B284-5E7A8BB65BD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryTreeBFS", "BinaryTreeBFS\BinaryTreeBFS.csproj", "{891C9FBD-F993-4497-B284-5E7A8BB65BD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinarySearchTree", "BinarySearchTree\BinarySearchTree.csproj", "{82F03DE6-962A-496D-B0DD-0C3DF574C702}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinarySearchTree", "BinarySearchTree\BinarySearchTree.csproj", "{82F03DE6-962A-496D-B0DD-0C3DF574C702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphGeneral", "GraphGeneral\GraphGeneral.csproj", "{F25C06CE-9AAC-416E-AD1B-8BC75FF3F1BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphGeneral", "GraphGeneral\GraphGeneral.csproj", "{F25C06CE-9AAC-416E-AD1B-8BC75FF3F1BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphBFS", "GraphBFS\GraphBFS.csproj", "{1E1ED161-FE5D-408F-A285-FC8B238E3A43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphBFS", "GraphBFS\GraphBFS.csproj", "{1E1ED161-FE5D-408F-A285-FC8B238E3A43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Depth_Breadth_FirstSearch", "Depth_Breadth_FirstSearch\Depth_Breadth_FirstSearch.csproj", "{01A481B3-44BA-4595-857C-EF64BAD6A5CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,10 @@ Global
 		{1E1ED161-FE5D-408F-A285-FC8B238E3A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E1ED161-FE5D-408F-A285-FC8B238E3A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E1ED161-FE5D-408F-A285-FC8B238E3A43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01A481B3-44BA-4595-857C-EF64BAD6A5CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01A481B3-44BA-4595-857C-EF64BAD6A5CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01A481B3-44BA-4595-857C-EF64BAD6A5CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01A481B3-44BA-4595-857C-EF64BAD6A5CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

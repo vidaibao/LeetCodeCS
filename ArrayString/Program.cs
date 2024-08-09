@@ -42,9 +42,87 @@ namespace ArrayString
 
             /*=========== HARD =============*/
             //IntegerToEnglishWords_273();
-            Candy_135();
+            //Candy_135();
+            TrappingRainWater_42();
+
 
         }
+
+        private static void TrappingRainWater_42()
+        {
+            int[] height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1];
+            Console.WriteLine(Trap_DP(height));
+        }
+        private static int Trap_DP(int[] height)//O(n) O(n)
+        {
+            if (height.Length == 1) return 0;
+
+            int n = height.Length;
+            int[] leftMax = new int[n]; int[] rightMax = new int[n];
+            int waterTrapped = 0;
+
+            leftMax[0] = height[0];
+            for (int i = 1; i < n; i++)
+            {
+                leftMax[i] = Math.Max(leftMax[i - 1], height[i]);
+            }
+
+            rightMax[n-1] = height[n-1];
+            for (int i = n - 2; i >= 0; i--)
+            {
+                rightMax[i] = Math.Max(rightMax[i + 1], height[i]);
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                waterTrapped += Math.Min(leftMax[i], rightMax[i]) - height[i];
+            }
+
+            return waterTrapped;
+        }
+        private static int Trap_2Pointers(int[] height)//O(n)
+        {
+            if (height.Length == 1) return 0;
+            
+            int left = 0, right = height.Length - 1;
+            int leftMax = 0, rightMax = 0;
+            int waterTrapped = 0;
+            // Two pointers
+            while (left < right)
+            {
+                if (height[left] < height[right])
+                {
+                    if (height[left] >= leftMax)
+                    {
+                        leftMax = height[left];
+                    }
+                    else
+                    {
+                        waterTrapped += leftMax - height[left];
+                    }
+                    left++;
+                }
+                else
+                {
+                    if (height[right] >= rightMax)
+                    {
+                        rightMax = height[right];
+                    }
+                    else
+                    {
+                        waterTrapped += rightMax - height[right];
+                    }
+                    right--;
+                }
+            }
+            
+            return waterTrapped;
+        }
+
+
+
+
+
 
         private static void Candy_135()
         {
