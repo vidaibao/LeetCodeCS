@@ -25,6 +25,8 @@ namespace ArrayString
             //MatrixCellsInDistanceOrder_1030();
 
             //DegreeOfAnArray_697();
+            //FirstUniqueCharacterInAString_387();
+            //FirstLetterAppearTwice_2351();
 
 
             /*========== MEDIUM ============*/
@@ -38,15 +40,188 @@ namespace ArrayString
             //GasStation_134();
             //ReverseWordsString_151();
             //ZigzagConversion_6();
-
+            //TwoSum_1();
+            TwoSum2_167();
 
             /*=========== HARD =============*/
             //IntegerToEnglishWords_273();
             //Candy_135();
-            TrappingRainWater_42();
-
+            //TrappingRainWater_42();
+            //TextJustification_68();
 
         }
+
+        private static void TwoSum_1()
+        {
+            int[] nums = [2, 7, 11, 15]; int target = 9;
+            Console.WriteLine(string.Join(", ", TwoSum(nums, target)));
+        }
+        static int[] TwoSum(int[] nums, int target)
+        {
+            Dictionary<int,int> map = new Dictionary<int,int>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int complement = target - nums[i];// con thieu bao n ? phan bu
+                if (map.ContainsKey(complement))
+                {
+                    return new int[] { map[complement], i };
+                }
+                map.Add(nums[i], i);//map[nums[i]] = i;
+            }
+            return new int[] { -1, -1 };
+        }
+
+
+
+
+
+        private static void TwoSum2_167()
+        {
+            int[] numbers = [2, 7, 11, 15]; int target = 9;
+            Console.WriteLine(string.Join(", ", TwoSum2Pointers(numbers, target)));
+        }
+        // must use only constant extra space.
+        static int[] TwoSum2Pointers(int[] numbers, int target)
+        {
+            int l = 0, r = numbers.Length - 1;
+            while (l < r)
+            {
+                if (numbers[l] + numbers[r] == target)
+                    return new int[] { l + 1, r + 1 };
+                else if (numbers[l] + numbers[r] > target)
+                    r--;
+                else 
+                    l++;
+            }
+            return new int[] { -1, -1 }; 
+        }
+
+
+
+
+
+        private static void TextJustification_68()
+        {
+            string[] words = ["Science", "is", "what", "we", "understand", "well", "enough", "to", "explain", "to", "a", "computer.", "Art", "is", "everything", "else", "we", "do"]; int maxWidth = 20;
+            //string[] words = ["What", "must", "be", "acknowledgment", "shall", "be"]; int maxWidth = 16;
+            //string[] words = ["This", "is", "an", "example", "of", "text", "justification."]; int maxWidth = 16;
+            var res = FullJustify(words, maxWidth);
+            foreach (var line in res) Console.WriteLine(line);
+        }
+        static IList<string> FullJustify(string[] words, int maxWidth)
+        {
+            var lines = new List<string>();
+            int index = 0;
+            while (index < words.Length)
+            {
+                int totalChars = words[index].Length;
+                int last = index + 1;
+                while (last < words.Length)
+                {
+                    if (totalChars + 1 + words[last].Length > maxWidth) break;
+                    totalChars += 1 + words[last].Length;
+                    last++;
+                }
+
+                var sb = new StringBuilder();
+                int gaps = last - index - 1;
+
+                if (last == words.Length || gaps == 0)
+                {
+                    for (int i = index; i < last; i++)
+                    {
+                        sb.Append(words[i]);
+                        if (i < last - 1) sb.Append(" ");
+                    }
+                    for (int i = sb.Length; i < maxWidth; i++)
+                    {
+                        sb.Append(" ");
+                    }
+                }
+                else
+                {
+                    int spaces = (maxWidth - totalChars) / gaps;
+                    int extraspaces = (maxWidth - totalChars) % gaps;
+
+                    for (int i = index; i < last; i++)
+                    {
+                        sb.Append(words[i]);
+                        if (i < last - 1)
+                        {
+                            int spaceToApply = spaces + (i - index < extraspaces ? 1 : 0);//step from 0 to extra - 1 
+                            for (int j = 0; j <= spaceToApply; j++) sb.Append(" ");//(= 1 + spaces + extra)
+                        }
+                    }
+
+                }
+
+                lines.Add(sb.ToString());
+                index = last;
+            }
+
+            return lines;
+        }
+
+
+
+
+
+        private static void FirstLetterAppearTwice_2351()
+        {
+            string s = "abccbaacz";
+            Console.WriteLine(RepeatedCharacter(s));
+        }
+        static char RepeatedCharacter(string s)
+        {
+            Dictionary<char, int> dic = new Dictionary<char, int>();
+            foreach (char c in s)
+            {
+                if (dic.ContainsKey(c))
+                {
+                    dic[c]++;
+                    if (dic[c] == 2) return c;
+                }
+                else
+                    dic[c] = 1;
+            }
+            return 'a';
+        }
+
+
+
+
+
+
+
+        private static void FirstUniqueCharacterInAString_387()
+        {
+            string s = "leetcode";
+            Console.WriteLine(FirstUniqChar(s));
+        }
+        static int FirstUniqChar(string s)
+        {
+            Dictionary<char, int> dic = new Dictionary<char, int>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (dic.ContainsKey(s[i]))
+                    dic[s[i]]++;
+                else
+                    dic[s[i]] = 1;
+            }
+            char c = char.MinValue;
+            foreach (var key in dic.Keys)
+            {
+                if (dic[key] == 1)
+                {
+                    c = key; break;
+                }
+            }
+            return s.IndexOf(c);
+        }
+
+
+
+
 
         private static void TrappingRainWater_42()
         {
@@ -80,44 +255,7 @@ namespace ArrayString
 
             return waterTrapped;
         }
-        private static int Trap_2Pointers(int[] height)//O(n)
-        {
-            if (height.Length == 1) return 0;
-            
-            int left = 0, right = height.Length - 1;
-            int leftMax = 0, rightMax = 0;
-            int waterTrapped = 0;
-            // Two pointers
-            while (left < right)
-            {
-                if (height[left] < height[right])
-                {
-                    if (height[left] >= leftMax)
-                    {
-                        leftMax = height[left];
-                    }
-                    else
-                    {
-                        waterTrapped += leftMax - height[left];
-                    }
-                    left++;
-                }
-                else
-                {
-                    if (height[right] >= rightMax)
-                    {
-                        rightMax = height[right];
-                    }
-                    else
-                    {
-                        waterTrapped += rightMax - height[right];
-                    }
-                    right--;
-                }
-            }
-            
-            return waterTrapped;
-        }
+        
 
 
 

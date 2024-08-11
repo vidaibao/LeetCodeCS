@@ -9,9 +9,49 @@ namespace Sorting
             //SquaresSortedArray_977();
             //IntervalListIntersections_986();
             //MergeInterval_56();
-            InsertInterval_57();
+            //InsertInterval_57();
+            //SortArrayByIncreasingFrequency_1636();
+            SortCharactersByFrequency_451();
+        }
+
+        private static void SortCharactersByFrequency_451()
+        {
+            string s = "tree";
+            Console.WriteLine(FrequencySort(s));
+        }
+        static string FrequencySort(string s)
+        {
+            return new string(s.GroupBy(c => c)
+                    .OrderByDescending(g => g.Count())
+                    .SelectMany(g => g)
+                    .ToArray());
+        }
+
+
+
+
+
+        private static void SortArrayByIncreasingFrequency_1636()
+        {
+            int[] nums = [2, 3, 1, 3, 2];//[1,3,3,2,2]
+            Console.WriteLine(string.Join(", ", FrequencySort(nums)));
 
         }
+        /*Given an array of integers nums, sort the array in increasing order based on the frequency of the values. If multiple values have the same frequency, sort them in decreasing order.
+        Return the sorted array.*/
+        static int[] FrequencySort(int[] nums)
+        {
+            return nums
+                .GroupBy(x => x) // Group elements by their value
+                .OrderBy(g => g.Count()) // Order by frequency (ascending)
+                .ThenByDescending(g => g.Key) // Order by value (descending) for the same frequency
+                .SelectMany(g => g) // Flatten the grouped elements back into a single sequence
+                .ToArray(); // Convert to array if needed
+        }
+
+
+
+
 
         private static void InsertInterval_57()
         {
