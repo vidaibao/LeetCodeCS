@@ -10,9 +10,71 @@ namespace DP
             //PascalTriangle_118(5);
             //BestTime2BuyNSellStock_121();
             //BestTime2BuyNSellStock2_122();
-            BestTime2BuyNSellStock3_123();
+            //BestTime2BuyNSellStock3_123();
+            MaximumLengthOfRepeatedSubarray_718();
 
         }
+
+        private static void MaximumLengthOfRepeatedSubarray_718()
+        {
+            int[] nums1 = [1, 2, 3, 2, 1], nums2 = [3, 2, 1, 4, 7];
+            Console.WriteLine(FindLength(nums1, nums2));
+        }
+        static int FindLength(int[] nums1, int[] nums2)
+        {
+            int n = nums1.Length;
+            int m = nums2.Length;
+            int[] dp = new int[m + 1];
+            int maxLength = 0;
+
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = m; j >= 1; j--)
+                {
+                    if (nums1[i - 1] == nums2[j - 1])
+                    {
+                        dp[j] = dp[j - 1] + 1;
+                        maxLength = Math.Max(maxLength, dp[j]);
+                    }
+                    else
+                    {
+                        dp[j] = 0;
+                    }
+                }
+            }
+
+            return maxLength;
+        }
+
+
+        static int FindLength01(int[] nums1, int[] nums2)
+        {
+            int n = nums1.Length;
+            int m = nums2.Length;
+            int[,] dp = new int[n + 1, m + 1];
+            int maxLength = 0;
+
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 1; j <= m; j++)
+                {
+                    if (nums1[i - 1] == nums2[j - 1])
+                    {
+                        dp[i, j] = dp[i - 1, j - 1] + 1;
+                        maxLength = Math.Max(maxLength, dp[i, j]);
+                    }
+                }
+            }
+
+            return maxLength;
+        }
+
+        
+
+
+
+
+
 
         private static void BestTime2BuyNSellStock3_123()
         {
