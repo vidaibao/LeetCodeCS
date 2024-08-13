@@ -8,9 +8,196 @@ namespace SlidingWindow
             //MinimumSizeSubarraySum_209();
             //MaximumLengthOfRepeatedSubarray_718();
             //LongestSubstringWithoutRepeatingCharacters_3();
-            SubstringWithConcatenationAllWords_30();
+            //SubstringWithConcatenationAllWords_30();
+            //MinimumWindowSubstring_76();
+            SlidingWindowMaximum_239();
 
         }
+
+        private static void SlidingWindowMaximum_239()
+        {
+            //int[] nums = [1]; int k = 1;
+            int[] nums = [1, 3, -1, -3, 5, 3, 6, 7]; int k = 3;
+            Console.WriteLine(string.Join(", ", MaxSlidingWindow(nums, k)));
+        }
+        static int[] MaxSlidingWindow(int[] nums, int k)
+        {
+            if (nums.Length == 1 || k == 1) return nums;
+
+            int n = nums.Length;
+            int[] result = new int[n - k + 1];
+            var deque = new LinkedList<int>();//retrieve INDEX numbers
+
+            for (int i = 0; i < n; i++)
+            {
+                // remove indice outbounded k range
+                if (deque.Count > 0 && deque.First.Value < i - k + 1) deque.RemoveFirst();
+                //remove all element less than current element
+                while (deque.Count > 0 && nums[deque.Last.Value] < nums[i]) deque.RemoveLast();
+
+                deque.AddLast(i);
+
+                if (i >= k - 1)
+                    result[i - k + 1] = nums[deque.First.Value];
+            }
+
+            return result;
+        }
+        static int[] MaxSlidingWindow00(int[] nums, int k)// time limit exceeded; 47/51 passed
+        {
+            if (nums.Length == 1 || k == 1) return nums;
+
+            var res = new List<int>();
+            var queue = new Queue<int>();
+            int i = 0;
+            int n = nums.Length;
+            int max = int.MinValue;
+            while (i < n)
+            {
+                if (nums[i] > max)
+                {
+                    max = nums[i];
+                    queue.Enqueue(nums[i]);
+                }
+
+                if (i >= k - 1)
+                {
+                    res.Add(max);
+                    int leftNum = queue.Dequeue();
+                    if (leftNum == max) { max = queue.Max(); }
+                }
+                i++;
+            }
+
+            return res.ToArray();
+        }
+
+
+
+
+
+
+        private static void MinimumWindowSubstring_76()
+        {
+            string s = "ADOBECODEBANC", t = "ABC";
+            Console.WriteLine(MinWindow(s, t));
+        }
+        static string MinWindow(string s, string t)
+        {
+            int minLen = int.MaxValue;
+            int minLeft = 0;
+            int n = s.Length, m = t.Length;
+            var tMap = new Dictionary<char, int>();
+            foreach (char c in t)
+            {
+                if (!tMap.ContainsKey(c))
+                    tMap[c] = 0;
+                tMap[c]++;
+            }
+
+            int required = tMap.Count;
+            int formed = 0;
+            int left = 0, right = 0;
+            var currentMap = new Dictionary<char, int>();
+            while (right < n)
+            {
+                char c = s[right];
+                if (!currentMap.ContainsKey(c))
+                    currentMap[c] = 0;
+                currentMap[c]++;
+
+                if (tMap.ContainsKey(c) && tMap[c] == currentMap[c]) formed++;
+
+                while (left <= right && formed == required)
+                {
+                    c = s[left];
+                    if (right - left + 1 < minLen)
+                    {
+                        minLen = right - left + 1;
+                        minLeft = left;
+                    }
+                    currentMap[c]--;//if this c in tMap and currentMap >>> required condition have to reduce
+                    if (tMap.ContainsKey(c) && currentMap[c] < tMap[c]) formed--;
+                    left++;
+                }
+                right++;
+            }
+
+            return minLen == int.MaxValue ? "" : s.Substring(minLeft, minLen);
+        }
+        static string MinWindow00(string s, string t)// Time limit excceed; 265/268 test cases passed
+        {
+            string res = string.Empty;
+            int minRes = int.MaxValue;
+            int m = s.Length, n = t.Length;
+            var mapT = new Dictionary<char, int>();
+            for (int i = 0; i < n; i++)
+            {
+                if (!mapT.ContainsKey(t[i]))
+                    mapT[t[i]] = 0;
+                mapT[t[i]]++;
+            }
+
+            int left = 0; 
+            for (int right = n - 1; right < m; )// substring length at least >= n
+            {
+                string subStr = s.Substring(left, right - left + 1);
+                int count = 0;
+                var currentMap = new Dictionary<char, int>();
+
+                for (int j = 0; j < subStr.Length; j++)
+                {
+                    if (mapT.ContainsKey(subStr[j]))
+                    {
+                        if (!currentMap.ContainsKey(subStr[j]))
+                            currentMap[subStr[j]] = 0;
+                        currentMap[subStr[j]]++;
+                        //same key-value
+                        if (mapT[subStr[j]] == currentMap[subStr[j]]) count++;
+                    }
+                }
+                // window substring OK >> adjust left pointer
+                if (mapT.Count == count)
+                    //if (AreDictionariesEqual(mapT, currentMap))
+                {
+                    if (subStr.Length < minRes)
+                    {
+                        minRes = subStr.Length;
+                        res = subStr;
+                    }
+                    left++;
+                }
+                else// not ok >>> extend right pointer
+                {
+                    right++;
+                }
+            }
+
+            return res;
+        }
+        static bool AreDictionariesEqual(Dictionary<char, int> map1, Dictionary<char, int> map2)
+        {
+            // Kiểm tra số lượng phần tử
+            if (map1.Count != map2.Count)
+                return false;
+
+            // Kiểm tra từng khóa và giá trị
+            foreach (var kvp in map1)
+            {
+                char key = kvp.Key;
+                int value = kvp.Value;
+
+                // Kiểm tra xem khóa có tồn tại trong map2 không và giá trị có bằng nhau không
+                if (!map2.ContainsKey(key) || map2[key] != value)
+                    return false;
+            }
+
+            return true;
+        }
+
+
+
+
 
         private static void SubstringWithConcatenationAllWords_30()
         {
@@ -18,6 +205,26 @@ namespace SlidingWindow
             string s = "barfoothefoobarman"; string[] words = ["foo", "bar"];//[0,9]
             Console.WriteLine(string.Join(", ", FindSubstring(s, words)));
         }
+        /*
+         You are given a string s and an array of strings words. All the strings of words are of the same length.
+        A concatenated string is a string that exactly contains all the strings of any permutation of words concatenated.
+        For example, if words = ["ab","cd","ef"], then "abcdef", "abefcd", "cdabef", "cdefab", "efabcd", and "efcdab" are all concatenated strings. "acdbef" is not a concatenated string because it is not the concatenation of any permutation of words.
+        Return an array of the starting indices of all the concatenated substrings in s. You can return the answer in any order.
+
+        Ý tưởng giải quyết:
+        Để giải quyết bài toán này, ta có thể sử dụng kỹ thuật Sliding Window kết hợp với HashMap. Ý tưởng là dịch chuyển một cửa sổ qua chuỗi s, kiểm tra xem tại mỗi vị trí dịch chuyển liệu chuỗi con từ vị trí đó có phải là một sự liên kết của tất cả các từ trong danh sách words hay không.
+
+        Cách tiếp cận:
+        Chuẩn bị: Tính tổng chiều dài của tất cả các từ trong words và chiều dài của từng từ riêng lẻ. Sử dụng một HashMap để lưu số lần xuất hiện của mỗi từ trong words.
+
+        Duyệt qua chuỗi: Sử dụng kỹ thuật Sliding Window để duyệt qua các chuỗi con của s với độ dài bằng tổng chiều dài của các từ. Tại mỗi vị trí dịch chuyển, chia chuỗi con thành các từ con và so sánh số lần xuất hiện của từng từ với HashMap.
+
+        Kết quả: Nếu tất cả các từ trong chuỗi con xuất hiện đúng số lần như trong words, thì vị trí bắt đầu của chuỗi con này là một kết quả hợp lệ. >>> No need permutations of words
+
+        Độ phức tạp:
+        Thời gian: O(n * m * l), với n là độ dài của chuỗi s, m là số lượng từ trong words, và l là độ dài của mỗi từ. Đây là độ phức tạp của vòng lặp dịch chuyển cửa sổ và so sánh từng từ trong cửa sổ với từ điển wordMap.
+        Không gian: O(m * l) để lưu trữ wordMap và currentMap.
+         */
         static IList<int> FindSubstring(string s, string[] words)
         {
             var result = new List<int>();
@@ -26,7 +233,6 @@ namespace SlidingWindow
 
             int wordLength = words[0].Length;
             int wordCount = words.Length;
-            int substringLength = wordLength * wordCount;
 
             // Create a map of the words and their frequencies
             var wordMap = new Dictionary<string, int>();
@@ -40,8 +246,8 @@ namespace SlidingWindow
             // Sliding window on each possible starting index within the word length
             for (int i = 0; i < wordLength; i++)
             {
-                int left = i, right = i;
-                var currentMap = new Dictionary<string, int>();
+                int left = i, right = i;//control sliding window
+                var currentMap = new Dictionary<string, int>();//number of occurencies of word in current window
                 int count = 0;
 
                 while (right + wordLength <= s.Length)
@@ -68,7 +274,7 @@ namespace SlidingWindow
                                     count--;
                             }
                         }
-
+                        //chuỗi con hiện tại là một sự kết hợp hợp lệ của tất cả các từ trong words, ta thêm left vào danh sách kết quả.
                         if (count == wordCount)
                             result.Add(left);
                     }
@@ -80,7 +286,6 @@ namespace SlidingWindow
                     }
                 }
             }
-
             return result;
         }
 
