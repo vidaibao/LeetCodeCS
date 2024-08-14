@@ -10,9 +10,255 @@ namespace SlidingWindow
             //LongestSubstringWithoutRepeatingCharacters_3();
             //SubstringWithConcatenationAllWords_30();
             //MinimumWindowSubstring_76();
-            SlidingWindowMaximum_239();
+            //SlidingWindowMaximum_239();
+            //PermutationInString_567();
+            FindAllAnagramsInAString_438();
 
         }
+
+        private static void FindAllAnagramsInAString_438()
+        {
+            //string s = "abab", p = "ab";
+            string s = "cbaebabacd", p = "abc";
+            Console.WriteLine(string.Join(", ", FindAnagrams(s, p)));
+        }
+        static IList<int> FindAnagrams(string s, string p)
+        {
+            var res = new List<int>();
+            if (p.Length > s.Length) return res;
+
+            int n = s.Length; int k = p.Length;
+
+            var pMap = new Dictionary<char, int>();
+            var currentMap = new Dictionary<char, int>();
+            // 1st window
+            for (int i = 0; i < k; i++)
+            {
+                char c = p[i];
+                if (!pMap.ContainsKey(c))
+                    pMap[c] = 0;
+                pMap[c]++;
+                c = s[i];
+                if (!currentMap.ContainsKey(c))
+                    currentMap[c] = 0;
+                currentMap[c]++;
+            }
+            // Count match in 1st window
+            int required = pMap.Count;
+            int matches = 0;
+            foreach (char c in pMap.Keys)
+            {
+                if (currentMap.TryGetValue(c, out int val))
+                    if (pMap[c] == val) matches++;
+            }
+            // Sliding window k in s
+            int left = 0;
+            for (; left < n - k; left++)
+            {
+                if (matches == required) res.Add(left);
+
+                int right = left + k;
+                char c = s[right];
+                if (!currentMap.ContainsKey(c))
+                    currentMap[c] = 0;
+                // add to 
+                currentMap[c]++;
+                if (pMap.TryGetValue(c, out int val))
+                {
+                    if (currentMap[c] == val) matches++;
+                    else if (currentMap[c] == val + 1) matches--;
+                }
+
+                // reduce outbounced left
+                c = s[left];
+                currentMap[c]--;//already exits in current window
+                if (pMap.TryGetValue(c, out val))
+                {
+                    if (currentMap[c] == val) matches++;
+                    else if (currentMap[c] == val - 1) matches--;
+                }
+            }
+            if (matches == required) res.Add(left);
+
+            return res;
+        }
+
+
+
+
+
+        private static void PermutationInString_567()
+        {
+            //string s1 = "hello", s2 = "ooolleoooleh";
+            //string s1 = "adc", s2 = "dcda";
+            //string s1 = "ab", s2 = "eidboaoo";
+            string s1 = "ab", s2 = "eidbaooo";
+            Console.WriteLine(CheckInclusion02(s1, s2));
+        }
+        //return true if one of s1's permutations is the substring of s2.
+        static bool CheckInclusion02(string s1, string s2)//61ms
+        {
+            if (s1.Length > s2.Length) return false;
+
+            int n = s2.Length;
+            int k = s1.Length;
+            var s1Map = new Dictionary<char, int>();
+            var currentMap = new Dictionary<char, int>();
+
+            // First window
+            for (int i = 0; i < k; i++)
+            {
+                if (!s1Map.ContainsKey(s1[i]))
+                    s1Map[s1[i]] = 0;
+                s1Map[s1[i]]++;
+
+                if (!currentMap.ContainsKey(s2[i]))
+                    currentMap[s2[i]] = 0;
+                currentMap[s2[i]]++;
+            }
+            // Counting match of 1st window
+            int required = s1Map.Count;
+            int matches = 0;
+            foreach (var c in s1Map.Keys)
+            {
+                if (currentMap.TryGetValue(c, out int val))
+                    if (s1Map[c] == val) matches++;
+            }
+
+            // Sliding window k in s2
+            int right = k;//window k
+            for (int left = 0; left < n - k; left++)
+            {
+                if (matches == required) return true;
+
+                char c = s2[right++];
+                if (!currentMap.ContainsKey(c))
+                    currentMap[c] = 0;
+                
+                currentMap[c]++;
+                if (s1Map.TryGetValue(c, out int val))
+                {
+                    if (currentMap[c] == val) matches++;
+                    else if (currentMap[c] == val + 1) matches--;
+                }
+
+                c = s2[left];
+                currentMap[c]--;
+                if (s1Map.TryGetValue(c, out val))
+                {
+                    if (currentMap[c] == s1Map[c]) matches++;
+                    else if (currentMap[c] == val - 1) matches--;
+                }
+            }
+
+            return matches == required;
+        }
+        static bool CheckInclusion(string s1, string s2)
+        {
+            if (s1.Length > s2.Length) return false;
+
+            int k = s1.Length;
+            int n = s2.Length;
+
+            int[] s1Count = new int[26];
+            int[] s2Count = new int[26];
+            
+            //Frequency count s1 and in first window at s2
+            for (int i = 0; i < k; i++)
+            {
+                s1Count[s1[i] - 'a']++;
+                s2Count[s2[i] - 'a']++;
+            }
+            // Count match in first window
+            // if matches == 26 >>> there's one permutation of s1 in s2
+            int matches = 0;
+            for (int i = 0; i < 26; i++)//a -> z
+            {
+                if (s1Count[i] == s2Count[i]) matches++;
+            }
+            //Sliding window frame size k in s2
+            for (int i = 0; i < n - k; i++)
+            {
+                if (matches == 26) return true;
+
+                int leftIndex = s2[i] - 'a';//left index (pointer) will be reduce counter
+                int rightIndex = s2[i + k] - 'a';//frame right edge will be add + 1
+
+                s2Count[rightIndex]++;//add right 1 more and Watch count
+                // if same then match + 1
+                if (s2Count[rightIndex] == s1Count[rightIndex])
+                    matches++;
+                // before same but not now >> -1
+                else if (s2Count[rightIndex] == s1Count[rightIndex] + 1)
+                    matches--;
+
+                s2Count[leftIndex]--;
+                if (s2Count[leftIndex] == s1Count[leftIndex])
+                    matches++;
+                else if (s2Count[leftIndex] == s1Count[leftIndex] - 1)
+                    matches--;
+            }
+
+            return matches == 26;
+        }
+        static bool CheckInclusion01(string s1, string s2)//1200ms
+        {
+            if (s1.Length > s2.Length) return false;
+
+            int n = s2.Length;
+            int k = s1.Length;
+            var s1Map = new Dictionary<char, int>();
+            foreach (char c in s1) 
+            {
+                if (!s1Map.ContainsKey(c)) 
+                    s1Map[c] = 0;
+                s1Map[c]++;
+            }
+
+            var currentMap = new Dictionary<char, int>();
+            int required = s1Map.Count;
+            int formed = 0;
+            for (int i = 0; i <= n - k; i++)//sliding window
+            {
+                char c = s2[i];
+                if (!s1Map.ContainsKey(c))
+                {
+                    currentMap.Clear(); formed = 0;//reset
+                    continue;
+                }
+
+                int j = i;
+                while (j < i + k)
+                {
+                    c = s2[j++];
+                    if (!s1Map.ContainsKey(c))
+                    {
+                        currentMap.Clear(); formed = 0;//reset
+                        break;
+                    }
+
+                    if (!currentMap.ContainsKey(c))
+                        currentMap[c] = 0;
+                    currentMap[c]++;
+
+                    if (currentMap.Count > 0 && s1Map[c] == currentMap[c]) formed++;
+
+                    
+                }
+
+                if (formed == required) return true;
+                else
+                {
+                    currentMap.Clear(); formed = 0;//reset
+                }
+            }
+
+            return false;
+        }
+
+
+
+
 
         private static void SlidingWindowMaximum_239()
         {
@@ -20,13 +266,36 @@ namespace SlidingWindow
             int[] nums = [1, 3, -1, -3, 5, 3, 6, 7]; int k = 3;
             Console.WriteLine(string.Join(", ", MaxSlidingWindow(nums, k)));
         }
+        static int[] MaxSlidingWindow01(int[] nums, int k)// 
+        {
+            if (nums.Length == 1 || k == 1) return nums;
+
+            var res = new List<int>();
+            var queue = new Queue<int>();
+            int i = 0;
+            int n = nums.Length;
+            while (i < n)
+            {
+                //control left window frame
+                if (queue.Count > 0 && queue.Peek() < i - k + 1) queue.Dequeue();
+
+                while (queue.Count > 0 && queue.Peek() < nums[i]) queue.Dequeue();//
+
+                if (i >= k - 1) 
+
+
+                i++;
+            }
+
+            return res.ToArray();
+        }
         static int[] MaxSlidingWindow(int[] nums, int k)
         {
             if (nums.Length == 1 || k == 1) return nums;
 
             int n = nums.Length;
             int[] result = new int[n - k + 1];
-            var deque = new LinkedList<int>();//retrieve INDEX numbers
+            var deque = new LinkedList<int>();//retrieve INDEX numbers >>> HANDLE via INDEX
 
             for (int i = 0; i < n; i++)
             {
