@@ -12,9 +12,85 @@ namespace SlidingWindow
             //MinimumWindowSubstring_76();
             //SlidingWindowMaximum_239();
             //PermutationInString_567();
-            FindAllAnagramsInAString_438();
+            //FindAllAnagramsInAString_438();
+            //ContainsDuplicate2_219();
+            ContainsDuplicate3_220();
 
         }
+
+        private static void ContainsDuplicate3_220()
+        {
+            int[] nums = [1, 5, 9, 1, 5, 9]; int indexDiff = 2, valueDiff = 3;
+            //int[] nums = [1, 2, 3, 1]; int indexDiff = 3, valueDiff = 0;
+            Console.WriteLine(ContainsNearbyAlmostDuplicate(nums, indexDiff, valueDiff));
+        }
+        /*You are given an integer array nums and two integers indexDiff and valueDiff.
+        Find a pair of indices (i, j) such that:
+        i != j,
+        abs(i - j) <= indexDiff.
+        abs(nums[i] - nums[j]) <= valueDiff, and
+        Return true if such pair exists or false otherwise.*/
+        static bool ContainsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff)
+        {
+            var window = new SortedSet<int>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int current = nums[i];
+                // Check for any number in the window within the difference valueDiff
+                if (window.GetViewBetween(current - valueDiff, current + valueDiff).Count > 0) return true;
+
+                window.Add(current);
+                // Maintain the size of the window to indexDiff
+                if (window.Count > indexDiff) window.Remove(nums[i - indexDiff]);
+            }
+
+            return false;
+        }
+
+
+
+
+
+        private static void ContainsDuplicate2_219()
+        {
+            int[] nums = [1, 2]; int k = 2;
+            //int[] nums = [1, 2, 3, 1, 2, 3]; int k = 2;
+            //int[] nums = [1, 2, 3, 1]; int k = 3;
+            Console.WriteLine(ContainsNearbyDuplicate(nums, k));
+        }
+        /*Given an integer array nums and an integer k, return true if there are two distinct indices i and j in the array such that nums[i] == nums[j] and abs(i - j) <= k.*/
+        static bool ContainsNearbyDuplicate(int[] nums, int k)
+        {
+            if (k == 0 || nums.Length == 1) return false;
+
+            var map = new Dictionary<int, int>();
+            
+            int left = 0;
+            for (int right = 0; right < nums.Length; right++)
+            {
+                int l = nums[left];
+                int r = nums[right];
+                
+                if (right - left > k)
+                {
+                    map[l]--;//reduce
+                    left++;
+                }
+
+                //add
+                if (!map.ContainsKey(r))
+                    map[r] = 0;
+                map[r]++;
+                if (map[r] == 2) return true;
+            }
+
+            return false;
+        }
+
+
+
+
 
         private static void FindAllAnagramsInAString_438()
         {

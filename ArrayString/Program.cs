@@ -29,6 +29,7 @@ namespace ArrayString
             //FirstLetterAppearTwice_2351();
 
 
+
             /*========== MEDIUM ============*/
             //Integer2Roman_12();
             //JumpGame_55();
@@ -50,6 +51,17 @@ namespace ArrayString
             //TextJustification_68();
 
         }
+
+
+
+
+
+
+        
+
+
+
+
 
         private static void TwoSum_1()
         {

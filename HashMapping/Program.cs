@@ -2,6 +2,7 @@
 
 
 
+
 namespace HashMapping
 {
     internal class Program
@@ -13,10 +14,46 @@ namespace HashMapping
             //IsomorphicString_205();
             //ValidAnagrams_242();
             //GroupAnagrams_49();
-            FindResultantArrayAfterRemovingAnagrams_2273();
+            //FindResultantArrayAfterRemovingAnagrams_2273();
+            WordPattern_290();
 
         }
 
+        private static void WordPattern_290()
+        {
+            string pattern = "abba", s = "dog cat cat dog";
+            Console.WriteLine(WordPattern(pattern, s));
+        }
+        static bool WordPattern(string pattern, string s)
+        {
+            var s1 = s.Split(' ');
+            if (s1.Length != pattern.Length) return false;
+
+            var psMap = new Dictionary<char, string>();
+            var spMap = new Dictionary<string, char>();
+
+            for (int i = 0; i < pattern.Length; i++)
+            {
+                char p = pattern[i];
+                string ss = s1[i];
+
+                if (psMap.ContainsKey(p))
+                {
+                    if (psMap[p] != ss) return false;
+                }
+                else
+                    psMap[p] = ss;
+
+                if (spMap.ContainsKey(ss))
+                {
+                    if (spMap[ss] != p) return false;
+                }
+                else
+                    spMap[ss] = p;
+            }
+
+            return true;
+        }
 
 
 
