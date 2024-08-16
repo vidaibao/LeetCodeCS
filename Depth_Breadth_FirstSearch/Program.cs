@@ -9,7 +9,7 @@ namespace Depth_Breadth_FirstSearch
         static void Main(string[] args)
         {
             //============= EASY =================
-            FloodFill_733();
+            //FloodFill_733();
 
 
 
@@ -20,7 +20,54 @@ namespace Depth_Breadth_FirstSearch
             //IslandPerimeter_463();
             //MaxAreaOfIsland_695();
             //ColoringABorder_1034();
+            MaximumNumberOfFishInAGrid_2658();
 
+        }
+
+        private static void MaximumNumberOfFishInAGrid_2658()
+        {
+            int[][] grid = [[0, 2, 1, 0], [4, 0, 0, 3], [1, 0, 0, 4], [0, 3, 2, 0]];
+            Console.WriteLine(FindMaxFish(grid));
+        }
+        static int FindMaxFish(int[][] grid)
+        {
+            int maxFish = 0, fish = 0;
+            int H = grid.Length, W = grid[0].Length;
+            bool[,] visited = new bool[H, W];
+            int[] dr = [-1, 1, 0, 0]; // up down left right
+            int[] dc = [0, 0, -1, 1];
+
+            for (int r = 0; r < H; r++)
+            {
+                for (int c = 0; c < W; c++)
+                {
+                    if (visited[r, c] || grid[r][c] == 0) { continue; }
+
+                    var queue = new Queue<(int,int)>();
+                    queue.Enqueue((r, c));
+                    fish = grid[r][c];
+                    visited[r, c] = true;
+
+                    while (queue.Count > 0)
+                    {
+                        var (row, col) = queue.Dequeue();
+                        for (int i = 0; i < 4; i++)
+                        {
+                            int nr = row + dr[i]; int nc = col + dc[i];
+                            if (0 <= nr && nr < H && 0 <= nc && nc < W && !visited[nr, nc] && grid[nr][nc] != 0)
+                            {
+                                queue.Enqueue((nr, nc));
+                                visited[nr, nc] = true;
+                                fish += grid[nr][nc];
+                            }
+                        }
+                    }
+
+                    if (fish > maxFish) maxFish = fish;
+                }
+            }
+
+            return maxFish;
         }
 
 
