@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 
 namespace ArrayString
 {
@@ -42,7 +43,9 @@ namespace ArrayString
             //ReverseWordsString_151();
             //ZigzagConversion_6();
             //TwoSum_1();
-            TwoSum2_167();
+            //TwoSum2_167();
+            AsteroidCollision_735();
+
 
             /*=========== HARD =============*/
             //IntegerToEnglishWords_273();
@@ -52,12 +55,108 @@ namespace ArrayString
 
         }
 
+        private static void AsteroidCollision_735()
+        {
+            //int[] asteroids = [-2, -1, 1, 2]; // []
+            int[] asteroids = [8, -8]; // []
+            //int[] asteroids = [10, 2, -5]; // [5,10]
+            //int[] asteroids = [5, 10, -5]; // [5,10]
+            Console.WriteLine(string.Join(", ", AsteroidCollision(asteroids)));
+        }
+        /*Iterate through the list of asteroids:
 
+        If the stack is empty or the current asteroid is moving to the right (positive), push it onto the stack.
+        If the current asteroid is moving to the left (negative), check for collisions:
+        Compare with the top of the stack (which must be a positive asteroid if a collision is possible).
+        Handle collisions based on size (absolute value).
+        Continue checking until there is no collision, or the asteroid is destroyed.
+        Return the stack:
 
+        The stack will contain the remaining asteroids after all collisions.*/
+        static int[] AsteroidCollision(int[] asteroids)
+        {
+            var stack = new Stack<int>();
 
+            foreach (var asteroid in asteroids)
+            {
+                bool exploded = false;
 
+                // Check the stack for possible collisions
+                while (asteroid < 0 && stack.Count > 0 && stack.Peek() > 0)
+                {
+                    // stack top is smaller, it explodes (pop the stack)
+                    if (stack.Peek() < -asteroid)
+                    {
+                        stack.Pop(); // Positive asteroid exploded
+                    }
+                    // stack top is the same size, both explode (pop and skip adding the current asteroid).
+                    else if (stack.Peek() == -asteroid)
+                    {
+                        stack.Pop();// Both exploded
+                        exploded = true; break; // no more current asteroid 
+                    }
+                    // stack top is larger, the current asteroid explodes
+                    else 
+                    {
+                        exploded = true; break;
+                    }
+                }
+                // Positive asteroid (> 0): Simply push onto the stack.
+                if (!exploded)
+                {
+                    stack.Push(asteroid);
+                }
+            }
 
-        
+            return stack.Reverse().ToArray();
+        }
+        static int[] AsteroidCollision00(int[] asteroids)
+        {
+            var stack = new Stack<int>(asteroids);
+            int n = 0;
+            do
+            {
+                n = stack.Count;
+                var buffer = new Stack<int>();
+                int left = 0, right = 0;
+                while (stack.Count > 0)
+                {
+                    if (buffer.Count > 0)
+                    {
+                        left = stack.Pop();
+                        right = buffer.Pop();
+                    }
+                    else
+                    {
+                        right = stack.Pop();
+                        left = stack.Pop();
+                    }
+                    
+                    if (left * right < 0)
+                    {
+                        if (right < 0) // will go to left
+                        {
+                            if (Math.Abs(left) > Math.Abs(right))
+                            {
+                                buffer.Push(left);
+                            }
+                            else if (Math.Abs(left) < Math.Abs(right))
+                                buffer.Push(right);
+                        }
+                        else 
+                            buffer.Push(right);buffer.Push(left); 
+                    }
+                    else
+                    {
+                        buffer.Push(right);buffer.Push(left); 
+                    }
+                }
+                while (buffer.Count > 0) stack.Push(buffer.Pop());
+
+            } while (1 < stack.Count && stack.Count < n);
+            
+            return stack.ToArray();
+        }
 
 
 

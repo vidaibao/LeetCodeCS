@@ -10,9 +10,151 @@ namespace Matrix
             //SpiralMatrix_54();
             //SpiralMatrix2_59();
             //SpiralMatrix3_885();
-            SpiralMatrix4_2326();
+            //SpiralMatrix4_2326();
+            //RotateImage_48();
+            //SetMatrixZeroes_73();
+            //GameOfLife_289();
 
         }
+
+        private static void GameOfLife_289()
+        {
+            int[][] board = [[0, 1, 0], [0, 0, 1], [1, 1, 1], [0, 0, 0]]; // [[0,0,0],[1,0,1],[0,1,1],[0,1,0]]
+            //int[][] board = [[0, 1, 0], [0, 0, 1], [1, 1, 1], [0, 0, 0]]; // [[0,0,0],[1,0,1],[0,1,1],[0,1,0]]
+            UserPrintResult.Print2dArray(board);
+            Console.WriteLine("--------------------");
+            GameOfLife(board);
+            UserPrintResult.Print2dArray(board);
+        }
+        static void GameOfLife(int[][] board)
+        {
+            int m = board.Length; int n = board[0].Length;
+            bool[,] flip = new bool[m, n];
+            int[] dr = [-1, -1, -1, 1, 1, 1, 0, 0]; // up, up-left, up-right, down, down-left, down-right, left, right : 8 neighbours
+            int[] dc = [0, -1, 1, 0, -1, 1, -1, 1];
+            //var neighbours = new List<int>();
+            Func<int, int, (int, int)> NeighbourOf = (r, c) =>
+            {
+                int live = 0, dead = 0;
+                for (int i = 0; i < 8; i++)
+                {
+                    int nr = r + dr[i], nc = c + dc[i];
+                    if (0 <= nr && nr < m && 0 <= nc && nc < n)
+                    {
+                        if (board[nr][nc] == 1) live++;
+                        else dead++;
+                    }
+                }
+                return (live, dead);
+            };
+
+            for (int r = 0; r < m; r++)
+            {
+                for (int c = 0; c < n; c++)
+                {
+                    var (live, dead) = NeighbourOf(r, c);
+                    if (board[r][c] == 1) // live
+                    {
+                        if (live < 2 || live > 3) flip[r, c] = true; // under n over-population
+                    }
+                    else
+                    {
+                        if (live == 3) flip[r, c] = true;
+                    }
+                }
+            }
+
+            for (int r = 0; r < m; r++)
+            {
+                for (int c = 0; c < n; c++)
+                {
+                    if (flip[r, c]) board[r][c] = board[r][c] == 1 ? 0 : 1;
+                }
+            }
+        }
+
+
+
+        private static void SetMatrixZeroes_73()
+        {
+            int[][] matrix = [[0, 1, 2, 0], [3, 4, 5, 2], [1, 3, 1, 5]]; // [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
+            //int[][] matrix = [[1, 1, 1], [1, 0, 1], [1, 1, 1]]; // [[1,0,1],[0,0,0],[1,0,1]]
+            UserPrintResult.Print2dArray(matrix);
+            Console.WriteLine("--------------------");
+            SetZeroes(matrix);
+            UserPrintResult.Print2dArray(matrix);
+        }
+        /*Use the first row and first column as markers.
+        Traverse the matrix. Whenever a 0 is found, mark the corresponding first row and first column.
+        Mark zeros based on the markers.
+        Traverse the matrix again, setting elements to 0 if the corresponding row or column is marked.
+        Handle the first row and first column separately.
+        If there was an original 0 in the first row/column, set the entire first row/column to 0.
+        This approach works with constant space, i.e., O(1), except for the markers.*/
+        static void SetZeroes(int[][] matrix)
+        {
+            int m = matrix.Length; int n = matrix[0].Length;
+            bool firstRowZero = false, firstColZero = false;
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (matrix[i][j] == 0)
+                    {
+                        if (i == 0) firstRowZero = true;
+                        if (j == 0) firstColZero = true;
+                        matrix[0][j] = 0; matrix[i][0] = 0;
+                    }
+                }
+            }
+            for (int i = 1; i < m; i++)
+            {
+                for (int j = 1; j < n; j++)
+                {
+                    if (matrix[i][0] == 0 || matrix[0][j] == 0) matrix[i][j] = 0;
+                }
+            }
+            
+            if (firstRowZero) Array.Fill(matrix[0], 0);
+
+            if (firstColZero)
+            {
+                for (int i = 0; i < m; i++) matrix[i][0] = 0;
+            }
+        }
+
+
+
+
+
+
+        private static void RotateImage_48()
+        {
+            int[][] matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]; // [[7,4,1],[8,5,2],[9,6,3]]
+            UserPrintResult.Print2dArray(matrix);
+            Console.WriteLine("--------------------");
+            Rotate(matrix);
+            UserPrintResult.Print2dArray(matrix);
+        }
+        static void Rotate(int[][] matrix)
+        {
+            int n = matrix.Length;
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = i + 1; j < n; j++)
+                {
+                    (matrix[i][j], matrix[j][i]) = (matrix[j][i], matrix[i][j]);
+                }
+            }
+            for (int i = 0; i < n; i++)
+            {
+                Array.Reverse(matrix[i]);
+            }
+        }
+
+
+
+
 
         private static void SpiralMatrix4_2326()
         {
