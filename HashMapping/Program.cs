@@ -3,6 +3,7 @@
 
 
 
+
 namespace HashMapping
 {
     internal class Program
@@ -15,9 +16,43 @@ namespace HashMapping
             //ValidAnagrams_242();
             //GroupAnagrams_49();
             //FindResultantArrayAfterRemovingAnagrams_2273();
-            WordPattern_290();
+            //WordPattern_290();
+            //LongestConsecutiveSequence_128();
 
         }
+
+        private static void LongestConsecutiveSequence_128()
+        {
+            int[] nums = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]; // 9
+            //int[] nums = [100, 4, 200, 1, 3, 2]; // 4
+            Console.WriteLine(LongestConsecutive(nums));
+        }
+        static int LongestConsecutive(int[] nums) // 69/76
+        {
+            if (nums.Length <= 1) return nums.Length;
+
+            var sorted = new SortedSet<int>(nums);
+            var newNums = sorted.ToArray();
+            int max = 0; int len = 1;
+
+            for (int i = 1; i < newNums.Length; i++)
+            {
+                if (newNums[i] == newNums[i - 1] + 1) len++;
+                else 
+                {
+                    if (len > max) max = len;
+                    len = 1; 
+                }
+            }
+            if (len > max) max = len;
+
+            return max;
+        }
+
+
+
+
+
 
         private static void WordPattern_290()
         {

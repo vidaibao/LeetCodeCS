@@ -15,5 +15,10 @@
                 Console.WriteLine(string.Join(", ", arr[i]));
             }
         }
+
+        public static void PrintList<T>(List<T> list)
+        {
+            foreach (T item in list) Console.WriteLine(item);
+        }
     }
 }
