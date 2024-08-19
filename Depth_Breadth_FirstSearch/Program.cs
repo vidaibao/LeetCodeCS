@@ -20,9 +20,130 @@ namespace Depth_Breadth_FirstSearch
             //IslandPerimeter_463();
             //MaxAreaOfIsland_695();
             //ColoringABorder_1034();
-            MaximumNumberOfFishInAGrid_2658();
+            //MaximumNumberOfFishInAGrid_2658();
+            SnakesAndLadders_909();
 
         }
+
+        private static void SnakesAndLadders_909()
+        {
+            int[][] board = [[-1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1], [-1, 35, -1, -1, 13, -1], [-1, -1, -1, -1, -1, -1], [-1, 15, -1, -1, -1, -1]]; // 4
+            Console.WriteLine(SnakesAndLadders(board));
+        }
+        static int SnakesAndLadders(int[][] board)
+        {
+            int n = board.Length;
+            var linearBoard = new int[n * n + 1];
+            var visited = new bool[n * n + 1];
+            int idx = 1; 
+            bool leftToRight = true;
+
+            // Convert 2D to 1D array
+            for (int r = n - 1; r >= 0; r--)
+            {
+                if (leftToRight)
+                {
+                    for (int c = 0; c < n; c++)
+                        linearBoard[idx++] = board[r][c];
+                }
+                else
+                {
+                    for (int c = n - 1; c >= 0; c--)
+                        linearBoard[idx++] = board[r][c];
+                }
+                leftToRight = !leftToRight;
+            }
+
+            idx = 1;
+            var queue = new Queue<int>();
+            queue.Enqueue(idx);
+            visited[idx] = true;
+            int moves = 0;
+
+            // BFS to find the shortest path to the last square
+            while (queue.Count > 0)
+            {
+                int size = queue.Count;
+                for (int i = 0; i < size; i++)
+                {
+                    int curr = queue.Dequeue();
+                    if (curr == n*n) return moves;
+                    for (int dice = 0; dice < 6; dice++)
+                    {
+                        // next with a label in the range [curr + 1, min(curr + 6, n2)]
+                        int next = curr + dice;
+                        if (next > n*n) continue;
+                        if (linearBoard[next] != -1) next = linearBoard[next];
+                        if (!visited[next])
+                        {
+                            visited[next] = true;
+                            queue.Enqueue(next);
+                        }
+                    }
+                }
+                moves++;
+            }
+
+            return -1;
+        }
+        static int SnakesAndLadders00(int[][] board)
+        {
+            int n = board.Length;
+            var visited = new bool[n, n];
+            int[] dr = [0, -1, 0, -1], dc = [1, 0, -1, 0]; // right up left up 
+            int[] direct = new int[n * n + 1]; // first move is to right
+            int count = 1, direction = 0, step = 0; 
+            int rStart = n - 1, cStart = 0;
+
+            for (int r = n - 1; r >= 0; r--)
+            {
+                for (int c = 0; c < n; c++)
+                {
+
+                }
+            }
+
+            /*
+            while (count <= n * n)
+            {
+                if (direction == 0 || direction == 2) step = n - 1;
+                else step = 1;
+
+                for (int i = 0; i < step; i++)
+                {
+                    
+
+
+
+                }
+
+
+
+                direction = (direction + 1) % 4;
+                count++;
+            }
+            */
+            var queue = new Queue<(int, int)>();
+            queue.Enqueue((rStart, cStart));
+            visited[rStart, cStart] = true;
+            while (queue.Count > 0)
+            {
+                var (r, c) = queue.Dequeue();
+                int nr = r + dr[direction]; int nc = c + dc[direction];
+
+
+            }
+
+
+
+
+            return 0;
+        }
+
+
+
+
+
 
         private static void MaximumNumberOfFishInAGrid_2658()
         {

@@ -7,9 +7,89 @@ namespace Stack.Heap
         static void Main(string[] args)
         {
             //ValidParentheses_20();
-            LongestValidParentheses_32();
+            //LongestValidParentheses_32();
+            CheckIfWordIsValidAfterSubstitutions_1003();
 
         }
+
+        private static void CheckIfWordIsValidAfterSubstitutions_1003()
+        {
+            string s = "aabcbc";
+            Console.WriteLine(IsValid_1003a(s));
+        }
+        static bool IsValid_1003a(string s)
+        {
+            if (s.Length < 3) { return false; }
+
+            while (s != "")
+            {
+                string temp = s.Replace("abc", "");
+
+                if (temp == s) break; // s has no more "abc"
+
+                s = temp;
+            }
+
+            return s == "";
+        }
+        static bool IsValid_1003b(string s)
+        {
+            if (s.Length <= 2)
+            {
+                return false;
+            }
+            Stack<char> st = new Stack<char>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (st.Count >= 2 && s[i] == 'c')
+                {
+                    char second = st.Pop();
+                    char first = st.Pop();
+                    if (first == 'a' && second == 'b')
+                    {
+                    }
+                    else
+                    {
+                        st.Push(first);
+                        st.Push(second);
+                        st.Push(s[i]);
+                    }
+                }
+                else
+                {
+                    st.Push(s[i]);
+                }
+            }
+            return st.Count == 0;
+        }
+        static bool IsValid_1003(string s)
+        {
+            if (s.Length < 3) { return false; }
+            
+            var stack = new Stack<char>();
+
+            foreach (char c in s) 
+            {
+                stack.Push(c);
+                if (stack.Count >= 3)
+                {
+                    char third = stack.Pop(); // c
+                    char second = stack.Pop(); // b
+                    char first = stack.Pop(); // a
+                    if (!(first == 'a' && second == 'b' && third == 'c')) 
+                    {
+                        stack.Push(first); stack.Push(second); stack.Push(third);
+                    }
+                }
+            }
+
+            return stack.Count == 0;
+        }
+
+
+
+
+
 
         private static void LongestValidParentheses_32()
         {
@@ -26,7 +106,7 @@ namespace Stack.Heap
 
             int max = 0;
             var stack = new Stack<int>();
-            stack.Push(-1); // valid from the start
+            stack.Push(-1); // valid from the start 0
 
             for (int i = 0; i < s.Length; i++)
             {
