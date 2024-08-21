@@ -21,9 +21,250 @@ namespace Depth_Breadth_FirstSearch
             //MaxAreaOfIsland_695();
             //ColoringABorder_1034();
             //MaximumNumberOfFishInAGrid_2658();
-            SnakesAndLadders_909();
+            //SnakesAndLadders_909();
+            RemoveInvalidParentheses_301();
 
         }
+
+        private static void RemoveInvalidParentheses_301()
+        {
+            string s = "(a)())()"; // ["(a())()","(a)()()"]
+            //string s = "()())()"; // ["(())()","()()()"]
+            //string s = ")("; // [""]
+            //string s = "))("; // [""]
+            var res = RemoveInvalidParentheses_DFS(s);
+            //var res = RemoveInvalidParentheses(s);
+            Console.WriteLine(string.Join(", ", res));
+        }
+        /*Given a string s that contains parentheses and letters, remove the minimum number of invalid parentheses to make the input string valid.
+        Return a list of unique strings that are valid with the minimum number of removals. You may return the answer in any order.*/
+        static IList<string> RemoveInvalidParentheses_DFS(string s)
+        {
+            var result = new HashSet<string>();
+            int leftRem = 0, rightRem = 0;
+
+            // First, find out how many left and right parentheses need to be removed
+            foreach (var c in s)
+            {
+                if (c == '(')
+                {
+                    leftRem++;
+                }
+                else if (c == ')')
+                {
+                    if (leftRem > 0)
+                    {
+                        leftRem--;
+                    }
+                    else
+                    {
+                        rightRem++;
+                    }
+                }
+            }
+
+            // Call the recursiveDFS helper function
+            DFS(s, 0, leftRem, rightRem, result);
+
+            return new List<string>(result);
+        }
+        private static void DFS(string s, int start, int leftRem, int rightRem, HashSet<string> result)
+        {
+            // If no more parentheses need to be removed, check if the string is valid
+            if (leftRem == 0 && rightRem == 0)
+            {
+                if (IsValidDFS(s)) result.Add(s);
+                return;
+            }
+
+            // Iterate through the string and try removing each parenthesis
+            for (int i = 0; i < s.Length; i++)
+            {
+                // Avoid duplicate removals
+                if (i != start && s[i] == s[i - 1]) continue;
+
+                // If it's a parenthesis, try to remove it
+                if (s[i] == '(' || s[i] == ')')
+                {
+                    string next = s.Substring(0, i) + s.Substring(i + 1);
+
+                    // Recurse
+                    if (rightRem > 0 && s[i] == ')')
+                    {
+                        DFS(next, i, leftRem, rightRem - 1, result);
+                    }
+                    else if (leftRem > 0 && s[i] == '()')
+                    {
+                        DFS(next, i, leftRem - 1, rightRem, result);
+                    }
+                }
+            }
+        }
+        private static bool IsValidDFS(string s)
+        {
+            int stack = 0;
+            foreach (char c in s)
+            {
+                if (c == '(')
+                {
+                    stack++;
+                }
+                else if (c == ')')
+                {
+                    if (stack == 0) return false;
+                    stack--;
+                }
+            }
+            return stack == 0;
+        }
+
+        static IList<string> RemoveInvalidParentheses_DFS00(string s) // error Gemini
+        {
+            var result = new List<string>();
+            Remove(s, 0, 0, 0, result);
+            return result;
+        }
+        private static void Remove(string s, int start, int last_i, int last_j, IList<string> res)
+        {
+            for (int stack = 0, i = start; i < s.Length; ++i)
+            {
+                if (s[i] == '(') stack++;
+                else if (s[i] == ')') stack--;
+                if (stack >= 0) continue; // valid
+                for (int j = last_j; j <= i; ++j)
+                    if (s[j] == ')' && (j == last_j || s[j - 1] != ')'))
+                        Remove(s.Substring(0, j) + s.Substring(j + 1), i, i, j, res);
+                return;
+            }
+            string reversed = new string(s.Reverse().ToArray());
+            if (start == 0) reversed = new string(reversed.Reverse().ToArray());
+            if (res.Contains(reversed)) return;
+            res.Add(reversed);
+        }
+
+        static IList<string> RemoveInvalidParentheses_BFS(string s)
+        {
+            var result = new List<string>();
+            if (string.IsNullOrEmpty(s)) return new List<string> { "" };
+
+            var queue = new Queue<string>();
+            var visited = new HashSet<string>();
+            queue.Enqueue(s);
+            visited.Add(s);
+            bool foundValid = false;
+
+            while (queue.Count > 0)
+            {
+                int levelSize = queue.Count;
+                //var levelVisited = new HashSet<string>();
+                for (int i = 0; i < levelSize; i++)
+                {
+                    string current = queue.Dequeue();
+                    if (IsValid(current))
+                    {
+                        result.Add(current);
+                        foundValid = true;
+                    }
+                    if (foundValid) continue;
+
+                    // Generate all possible states
+                    for (int j = 0; j < current.Length; j++)
+                    {
+                        if (current[j] != '(' && current[j] != ')') continue;
+                        string next = current.Substring(0, j) + current.Substring(j + 1);
+                        if (!visited.Contains(next))
+                        {
+                            queue.Enqueue(next);
+                            visited.Add(next);
+                        }
+                    }
+                }
+                if (foundValid) break; // Stop BFS when the first valid string is found
+            }
+
+            return result;
+        }
+
+        // Helper function to check if a string is valid
+        private static bool IsValid(string s)
+        {
+            int stack = 0; // ^-^
+            foreach (char c in s)
+            {
+                if (c == '(') stack++;
+                if (c == ')') stack--;
+                if (stack < 0) return false; // More closing brackets than opening
+            }
+            return stack == 0;
+        }
+        static IList<string> RemoveInvalidParentheses_BFS00(string s) // (a()) IsValid00 method
+        {
+            var result = new List<string>();
+            if (string.IsNullOrEmpty(s) || s.Length <= 1)  return result;
+
+            var queue = new Queue<string>();
+            var visited = new HashSet<string>(); // track visited strings and avoid processing the same string multiple times
+            queue.Enqueue(s);
+            visited.Add(s);
+            bool foundValid = false;
+
+            while (queue.Count > 0)
+            {
+                int levelSize = queue.Count;
+                //var levelVisited = new HashSet<string>();
+                for (int i = 0; i < levelSize; i++)
+                {
+                    string current = queue.Dequeue();
+                    if (IsValid(current))
+                    {
+                        result.Add(current);
+                        foundValid = true;
+                    }
+                    if (foundValid) continue;
+
+                    // Generate all possible states
+                    for (int j = 0; j < current.Length; j++)
+                    {
+                        //if (current[j] != '(' && current[j] != ')') continue;
+                        if (char.IsLetter(current[j])) continue; // ( and ) are not considered letters
+                        string next = current.Substring(0, j) + current.Substring(j + 1);
+                        if (next != "" && !visited.Contains(next))
+                        {
+                            queue.Enqueue(next);
+                            visited.Add(next);
+                        }
+                    }
+                }
+                if (foundValid) break; // Stop BFS when the first valid string is found
+            }
+
+            return result;
+        }
+
+        private static bool IsValid00(string s) // got error when checking )( ??? 
+        {
+            if (s == null || s.Length <= 1) return false;
+
+            var stack = new Stack<char>();
+            foreach (char c in s)
+            {
+                if (c == '(')
+                    stack.Push(c);
+                else
+                {
+                    if (stack.Count == 0) return false; // more close than openning parentheses
+                    char top = stack.Pop();
+                    if (c == ')' && top != '(')
+                        return false;
+                }
+            }
+            return stack.Count == 0;
+        }
+
+
+
+
+
 
         private static void SnakesAndLadders_909()
         {
@@ -63,12 +304,12 @@ namespace Depth_Breadth_FirstSearch
             // BFS to find the shortest path to the last square
             while (queue.Count > 0)
             {
-                int size = queue.Count;
+                int size = queue.Count; // possible each move
                 for (int i = 0; i < size; i++)
                 {
                     int curr = queue.Dequeue();
                     if (curr == n*n) return moves;
-                    for (int dice = 0; dice < 6; dice++)
+                    for (int dice = 1; dice <= 6; dice++) // 6-sided die roll
                     {
                         // next with a label in the range [curr + 1, min(curr + 6, n2)]
                         int next = curr + dice;
@@ -92,7 +333,7 @@ namespace Depth_Breadth_FirstSearch
             var visited = new bool[n, n];
             int[] dr = [0, -1, 0, -1], dc = [1, 0, -1, 0]; // right up left up 
             int[] direct = new int[n * n + 1]; // first move is to right
-            int count = 1, direction = 0, step = 0; 
+            //int count = 1, direction = 0, step = 0; 
             int rStart = n - 1, cStart = 0;
 
             for (int r = n - 1; r >= 0; r--)
@@ -129,7 +370,7 @@ namespace Depth_Breadth_FirstSearch
             while (queue.Count > 0)
             {
                 var (r, c) = queue.Dequeue();
-                int nr = r + dr[direction]; int nc = c + dc[direction];
+                //int nr = r + dr[direction]; int nc = c + dc[direction];
 
 
             }

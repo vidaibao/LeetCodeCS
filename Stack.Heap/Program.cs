@@ -172,7 +172,32 @@ namespace Stack.Heap
             //string s = "()[]{}";
             Console.WriteLine(IsValid(s));
         }
-        static bool IsValid(string s) // 55ms
+        static bool IsValid(string s)
+        {
+            Stack<char> stack = new Stack<char>();
+
+            foreach (char c in s)
+            {
+                if (c == '(' || c == '{' || c == '[')
+                {
+                    stack.Push(c);
+                }
+                else
+                {
+                    if (stack.Count == 0) return false;
+                    char top = stack.Pop();
+                    if ((c == ')' && top != '(') ||
+                        (c == '}' && top != '{') ||
+                        (c == ']' && top != '['))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return stack.Count == 0;
+        }
+        static bool IsValid01(string s) // 55ms
         {
             if (s.Length == 1 || s.Length % 2 == 1) return false;
 
