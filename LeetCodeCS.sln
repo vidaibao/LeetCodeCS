@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonUtil", "CommonUtil\Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BA44C53E-90FE-4229-8F40-F1AAF2CF4977}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stack.Heap", "Stack.Heap\Stack.Heap.csproj", "{D37287CA-911E-45C6-BDEB-E342E7899419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stack.Heap", "Stack.Heap\Stack.Heap.csproj", "{D37287CA-911E-45C6-BDEB-E342E7899419}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolveExamples", "SolveExamples\SolveExamples.csproj", "{C5577552-BAD4-4F91-BE0C-6EE13AB972ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +115,10 @@ Global
 		{D37287CA-911E-45C6-BDEB-E342E7899419}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D37287CA-911E-45C6-BDEB-E342E7899419}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D37287CA-911E-45C6-BDEB-E342E7899419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5577552-BAD4-4F91-BE0C-6EE13AB972ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5577552-BAD4-4F91-BE0C-6EE13AB972ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5577552-BAD4-4F91-BE0C-6EE13AB972ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5577552-BAD4-4F91-BE0C-6EE13AB972ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
