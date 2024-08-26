@@ -20,7 +20,7 @@ namespace SolveExamples
             //HanoiTower_150();
             //GreatestCommonDivisor_151();
             //AllPermutationsOfIntegerList_153();
-            BinarySearchUseRecursion_154();
+            //BinarySearchUseRecursion_154();
 
         }
 
@@ -66,7 +66,7 @@ namespace SolveExamples
             }
             GetPermutation(arr, 0, size);
         }
-        // Analysis: In permutation method at each recursive call number at index, “i” is swapped with all the numbers that are right of it.Since the number is swapped with all the numbers in its right one by one it will produce all the permutation possible.
+        // Analysis: In permutation method at each recursive call number at index, “i” is swapped with all the numbers that are right of it. Since the number is swapped with all the numbers in its right one by one it will produce all the permutation possible.
         private static void GetPermutation(int[] arr, int i, int length)
         {
             if (length == i)
