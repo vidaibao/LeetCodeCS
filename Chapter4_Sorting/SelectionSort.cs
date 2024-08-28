@@ -15,7 +15,7 @@ namespace Chapter4_Sorting
             for (int i = 0; i < size - 1; i++) // decides the number of times the inner loop will iterate
             {
                 max = 0;
-                for (int j = 1; j < size - 1 - i; j++)
+                for (int j = 1; j < size - i; j++) // 
                 {
                     if (arr[j] > arr[max]) max = j; // caculate the place (index) of the max
                 }

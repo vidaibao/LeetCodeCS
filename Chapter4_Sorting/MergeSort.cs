@@ -40,8 +40,7 @@ namespace Chapter4_Sorting
                 {
                     tempArray[count++] = arr[lowerStart++];
                 }
-                else
-                {
+                else {
                     tempArray[count++] = arr[upperStart++];
                 }
             }
