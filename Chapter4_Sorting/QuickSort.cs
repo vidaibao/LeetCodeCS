@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonUtil;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,9 +27,9 @@ namespace Chapter4_Sorting
             {
                 while (arr[lower] <= pivot && lower < upper) lower++;
                 while (arr[upper] > pivot && lower <= upper) upper--;
-                if (lower < upper) (arr[lower], arr[upper]) = (arr[upper], arr[lower]); // 
+                if (lower < upper) ArrayUtils.Swap(arr, lower, upper); //  
             }
-            (arr[start], arr[upper]) = (arr[upper], arr[start]); // upper is the pivot position
+            ArrayUtils.Swap(arr, start, upper); // upper is the pivot position
             QuickySort(arr, start, upper - 1); // pivot - 1 is the upper for left sub array
             QuickySort(arr, upper + 1, stop); // pivot + 1 is the lower for right sub array
         }

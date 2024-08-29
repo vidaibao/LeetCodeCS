@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonUtil;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -214,13 +215,20 @@ namespace Chapter4_Sorting
 
             while (sum > 0)
             {
-                sum = 0;
-                int smallest = arr[0];
+                sum = 0; int k = 0;
+                for (; k < size; k++)
+                {
+                    if (arr[k] > 0) break;
+                }
+                int smallest = arr[k];
                 for (int i = 0; i < size; i++)
                 {
                     arr[i] -= smallest;
-                    if (arr[i] > 0) count++; 
-                    sum += arr[i];
+                    if (arr[i] > 0)
+                    {
+                        count++;
+                        sum += arr[i];
+                    }
                 }
                 Console.WriteLine(count);
                 count = 0;
@@ -228,5 +236,132 @@ namespace Chapter4_Sorting
         }
 
 
+
+        /*
+         Merge Array
+        Problem: Given two sorted arrays. Sort the elements of these arrays so that first half of sorted elements will lie in first array and second half lies in second array. Extra space allowed is O(1).
+        
+        Solution: The first array will contain smaller part of the sorted output. We traverse the first array. Always compare the value of first array with the first element of the second array. If first array value is small than first element of second array we iterate further. If the first array value is greater than first element of second array. Then copy value of first element of second array into first array. And insert value of first array into second array in sorted order. Second array is always kept sorted so we need to compare only its first element.
+        Time complexity will O(M*N) where M is length of first array and N is length of second array.
+         */
+        public static void Merge(int[] arr1, int size1, int[] arr2, int size2)
+        {
+            int index = 0;
+            while ( index < size1 )
+            {
+                if (arr1[index] > arr2[0])
+                {
+                    // arr1[index] ^= arr2[0] ^= arr1[index] ^= arr2[0];
+                    // always compare to first element of arr2
+                    ArrayUtils.Swap(ref arr1[index++], ref arr2[0]);
+
+                    // after swap arr2 may be unsorted >>> insert into sorted at proper position
+                    for (int i = 0; i < size2 - 1; i++)
+                    {
+                        if (arr2[i] < arr2[i + 1]) break; // 
+                        ArrayUtils.Swap(ref arr2[i], ref arr2[i + 1]);
+                    }
+                }
+                else index++;
+            }
+        }
+
+
+
+        /*
+         Check Reverse
+        Problem: Given an array of integers, find if reversing a sub-array makes the array sorted.
+        Solution: In this algorithm start and stop are the boundary of reversed subarray whose reversal makes the whole array sorted.                                                
+         */
+        public static bool checkReverse(int[] arr)
+        {
+            int size = arr.Length;
+            int start = -1;
+            int stop = -1;
+            for (int i = 0; i < size - 1; i++)
+            {   // not ascending then stop n mark start pointer at i
+                if (arr[i] > arr[i + 1]) { start = i; break; }
+            }
+            if (start == -1)
+            {   // ascending array
+                return true;
+            }
+            for (int i = start; i < size - 1; i++)
+            {   // not descending then marks end of sub-array
+                if (arr[i] < arr[i + 1]) { stop = i; break; }
+            }
+            if (stop == -1)
+            {
+                return true;
+            }
+
+            // increasing property; ASCENDING
+            // after reversal the sub array should fit in the array
+            if (arr[start - 1] > arr[stop] || arr[stop + 1] < arr[start])
+            {
+                return false;
+            }
+            for (int i = stop + 1; i < size - 1; i++)
+            {
+                if (arr[i] > arr[i + 1]) return false;
+            }
+            return true;
+        }
+
+
+
+
+        /*
+         Union Intersection Sorted
+        Problem: Given two unsorted arrays, find union and intersection of these two arrays.
+        Solution: Sort both the arrays. Then traverse both the array, when we have common element we add it to intersection list and union list, when we have uncommon elements then we add it only union list.
+         */
+        private static void UnionIntersectionSorted(int[] arr1, int size1, int[] arr2, int size2)
+        {
+            int first = 0, second = 0;
+            int[] unionArr = new int[size1 + size2];
+            int[] interArr = new int[Math.Min(size1, size2)];
+            int uIndex = 0, iIndex = 0;
+
+            while (first < size1 && second < size2)
+            {
+                // common element
+                if (arr1[first] == arr2[second])
+                {
+                    interArr[iIndex++] = arr1[first];
+                    unionArr[uIndex++] = arr1[first];
+                    first++; second++;
+                }
+                else if (arr1[first] < arr2[second]) // uncommon >>> small element union from first array
+                {
+                    unionArr[uIndex++] = arr1[first++];
+                }
+                else // uncommon
+                {
+                    unionArr[uIndex++] = arr2[second++];
+                }
+            }
+            // remainder of arr1 OR arr2
+            while (first < size1)
+            {
+                unionArr[uIndex++] = arr1[first++];
+            }
+            while (second < size2)
+            {
+                unionArr[uIndex++] = arr2[second++];
+            }
+            // Print result
+            Console.Write("interArr: ");
+            UserPrintResult.PrintArray(interArr);
+            Console.Write("unionArr: ");
+            UserPrintResult.PrintArray(unionArr);
+        }
+
+        internal static void UnionIntersectionUnsorted(int[] arr1, int size1, int[] arr2, int size2)
+        {
+            Array.Sort(arr1);
+            Array.Sort(arr2);
+            UnionIntersectionSorted(arr1, size1, arr2, size2);
+        }
     }
 }

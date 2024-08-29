@@ -11,6 +11,8 @@
 
 
 
+
+
 namespace Chapter4_Sorting
 {
     internal class Program
@@ -25,12 +27,37 @@ namespace Chapter4_Sorting
             //QuickSelect01();
             //BucketSort01();
             //ProblemBasedOnSorting01();
-            ProblemBasedOnSorting012();
-            MinimumSwaps();
-            SeparateEvenAndOdd();
+            //ProblemBasedOnSorting012();
+            //MinimumSwaps();
+            //SeparateEvenAndOdd();
             SortByOrder();
-            //ArrayReduction01();
+            ArrayReduction01();
+            MergeArray();
+            UnionIntersectionSorted01();
+        }
 
+        private static void UnionIntersectionSorted01()
+        {
+            int[] arr1 = [1, 11, 2, 3, 14, 5, 6, 8, 9];
+            int[] arr2 = [2, 4, 5, 12, 7, 8, 13, 10];
+            Console.WriteLine("arr1: " + string.Join(", ", arr1));
+            Console.WriteLine("arr2: " + string.Join(", ", arr2));
+            Console.WriteLine("UnionIntersectionUnsorted(arr1, arr2)");
+            ProblemBasedOnSorting.UnionIntersectionUnsorted(arr1, arr1.Length, arr2, arr2.Length);
+        }
+
+        private static void MergeArray()
+        {
+            int[] arr1 = [1, 5, 9, 10, 15, 20];
+            int[] arr2 = [2, 3, 8, 13];
+            Console.WriteLine(string.Join(", ", arr1));
+            Console.WriteLine(string.Join(", ", arr2));
+            Console.WriteLine("Merge(arr1, arr2)");
+            ProblemBasedOnSorting.Merge(arr1, arr1.Length, arr2, arr2.Length);
+            Console.WriteLine(string.Join(", ", arr1));
+            Console.WriteLine(string.Join(", ", arr2));
+            Console.WriteLine("--------------------");
+            Console.WriteLine();
         }
 
         private static void ArrayReduction01()
@@ -39,7 +66,7 @@ namespace Chapter4_Sorting
             Console.WriteLine(string.Join(", ", array));
             Console.WriteLine("ArrayReduction(array)");
             ProblemBasedOnSorting.ArrayReduction(array);
-            Console.WriteLine(string.Join(", ", array));
+            //Console.WriteLine(string.Join(", ", array));
             Console.WriteLine("--------------------");
             Console.WriteLine();
         }
