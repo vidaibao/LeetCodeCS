@@ -1,18 +1,5 @@
 ﻿
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 namespace Chapter4_Sorting
 {
     internal class Program
@@ -30,10 +17,13 @@ namespace Chapter4_Sorting
             //ProblemBasedOnSorting012();
             //MinimumSwaps();
             //SeparateEvenAndOdd();
-            SortByOrder();
-            ArrayReduction01();
-            MergeArray();
-            UnionIntersectionSorted01();
+            //SortByOrder();
+            //ArrayReduction01();
+            //MergeArray();
+            //UnionIntersectionSorted01();
+
+            //-----------------------------------
+            Exercise.Exec01();
         }
 
         private static void UnionIntersectionSorted01()
