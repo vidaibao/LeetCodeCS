@@ -38,7 +38,7 @@ namespace ArrayString
             //H_Index_274();
             //ProductOfArrayExceptSelf_238();
             //MaximumProductSubarray_152();
-            //MaximumSubarray_53();
+            MaximumSubarray_53();
             //GasStation_134();
             //ReverseWordsString_151();
             //ZigzagConversion_6();
