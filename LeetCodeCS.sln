@@ -41,7 +41,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stack.Heap", "Stack.Heap\St
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolveExamples", "SolveExamples\SolveExamples.csproj", "{C5577552-BAD4-4F91-BE0C-6EE13AB972ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter4_Sorting", "Chapter4_Sorting\Chapter4_Sorting.csproj", "{81D6BEE0-B87D-48B5-8481-D2C24CFA0040}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chapter4_Sorting", "Chapter4_Sorting\Chapter4_Sorting.csproj", "{81D6BEE0-B87D-48B5-8481-D2C24CFA0040}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C5_Searching", "C5_Searching\C5_Searching.csproj", "{80A9312E-BA1F-4A24-BB1C-E453398CBF4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,6 +127,10 @@ Global
 		{81D6BEE0-B87D-48B5-8481-D2C24CFA0040}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81D6BEE0-B87D-48B5-8481-D2C24CFA0040}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81D6BEE0-B87D-48B5-8481-D2C24CFA0040}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80A9312E-BA1F-4A24-BB1C-E453398CBF4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80A9312E-BA1F-4A24-BB1C-E453398CBF4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80A9312E-BA1F-4A24-BB1C-E453398CBF4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80A9312E-BA1F-4A24-BB1C-E453398CBF4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,8 +11,97 @@ namespace Sorting
             //MergeInterval_56();
             //InsertInterval_57();
             //SortArrayByIncreasingFrequency_1636();
-            SortCharactersByFrequency_451();
+            //SortCharactersByFrequency_451();
+            Sum3Closest_16();
+
         }
+
+        private static void Sum3Closest_16()
+        {
+            /*
+             Given an integer array nums of length n and an integer target, find three integers in nums such that the sum is closest to target.
+            Return the sum of the three integers.
+            You may assume that each input would have exactly one solution.
+             */
+            int[] nums = [4, 0, 5, -5, 3, 3, 0, -4, -5]; int target = -2; // -2
+            //int[] nums = [-1, 2, 1, -4]; int target = 1;
+            Console.WriteLine(ThreeSumClosest(nums, target));
+
+        }
+
+        public static int ThreeSumClosest(int[] nums, int target)
+        {
+            Array.Sort(nums); // Sort the array to use two-pointer approach
+            int closestSum = nums[0] + nums[1] + nums[2];
+
+            for (int i = 0; i < nums.Length - 2; i++)
+            {
+                int left = i + 1;
+                int right = nums.Length - 1;
+
+                while (left < right)
+                {
+                    int currentSum = nums[i] + nums[left] + nums[right];
+
+                    if (Math.Abs(currentSum - target) < Math.Abs(closestSum - target))
+                    {
+                        closestSum = currentSum; // Update closestSum if current sum is closer to target
+                    }
+
+                    if (currentSum < target)
+                    {
+                        left++; // Move left pointer to increase sum
+                    }
+                    else if (currentSum > target)
+                    {
+                        right--; // Move right pointer to decrease sum
+                    }
+                    else
+                    {
+                        return currentSum; // Found exact target sum
+                    }
+                }
+            }
+
+            return closestSum;
+        }
+        private static int ThreeSumClosest01(int[] nums, int target)
+        {
+            Array.Sort(nums);
+            int size = nums.Length;
+            int diff = int.MaxValue;
+            int curr;
+            int i = 0, l, r;
+            int first = 0, second = 0, third = 0;
+            for (; i < size; i++)
+            {
+                l = i + 1; r = size - 1;
+                while (l < r)
+                {
+                    curr = Math.Abs(target - (nums[i] + nums[l] + nums[r]));
+                    if (curr < diff)
+                    {
+                        diff = curr;
+                        first = i; second = l; third = r;
+                    }
+                    if (curr == 0)
+                    {
+                        return nums[first] + nums[second] + nums[third];
+                    }
+                    else if (curr > 0)
+                    {
+                        l++;
+                    }
+                    else
+                    {
+                        r++;
+                    }
+                }
+            }
+
+            return nums[first] + nums[second] + nums[third];
+        }
+
 
         private static void SortCharactersByFrequency_451()
         {
