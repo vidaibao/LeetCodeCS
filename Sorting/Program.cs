@@ -12,9 +12,79 @@ namespace Sorting
             //InsertInterval_57();
             //SortArrayByIncreasingFrequency_1636();
             //SortCharactersByFrequency_451();
-            Sum3Closest_16();
+            //Sum3Closest_16();
+            FourthSum_18();
 
         }
+
+        private static void FourthSum_18()
+        {
+            /*
+             Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+
+            0 <= a, b, c, d < n
+            a, b, c, and d are distinct.
+            nums[a] + nums[b] + nums[c] + nums[d] == target
+            You may return the answer in any order.
+
+            Constraints:
+            1 <= nums.length <= 200
+            -10^9 <= nums[i] <= 10^9
+            -10^9 <= target <= 10^9
+             */
+
+            //int[] nums = [1, 0, -1, 0, -2, 2]; int target = 0; // [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+            //int[] nums = [2,2,2,2,2]; int target = 8; // [[2,2,2,2]]
+            int[] nums = [1_000_000_000, 1_000_000_000, 1_000_000_000, 1_000_000_000]; int target = -294_967_296; // []
+            var res = FourSum(nums, target);
+            foreach (var re in res)
+            {
+                Console.WriteLine(string.Join("\t", re));
+            }
+        }
+        public static IList<IList<int>> FourSum(int[] nums, long target)
+        {
+            var result = new List<IList<int>>();
+            Array.Sort(nums);
+            int n = nums.Length;
+
+            for (int a = 0; a < n - 3; a++)
+            {
+                if (a > 0 && nums[a-1] == nums[a]) continue; // skip dublicates
+                for (int b = a + 1; b < n - 2; b++)
+                {
+                    if (b > a + 1 && nums[b - 1] == nums[b]) continue; // skip dublicates
+
+                    long targetSum = target - nums[a] - nums[b];
+                    int l = b + 1, r = n - 1;
+                    while (l < r)
+                    {
+                        int sum = nums[l] + nums[r];
+                        if (sum == targetSum)
+                        {
+                            result.Add(new List<int> { nums[a], nums[b], nums[l], nums[r] });
+                            l++; r--;
+                            while (l < r && nums[l] == nums[l-1]) l++; // skip dublicates
+                            while (l < r && nums[r] == nums[r+1]) r--; // skip dublicates
+                        }
+                        else if (sum < targetSum)
+                        {
+                            l++;
+                        }
+                        else
+                        {
+                            r--;
+                        }
+                        
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+
 
         private static void Sum3Closest_16()
         {
@@ -69,37 +139,37 @@ namespace Sorting
         {
             Array.Sort(nums);
             int size = nums.Length;
-            int diff = int.MaxValue;
-            int curr;
-            int i = 0, l, r;
-            int first = 0, second = 0, third = 0;
-            for (; i < size; i++)
+
+            int closestSum = nums[0] + nums[1] + nums[2];
+
+            int l, r;
+            for (int i = 0; i < size - 2; i++)
             {
                 l = i + 1; r = size - 1;
                 while (l < r)
                 {
-                    curr = Math.Abs(target - (nums[i] + nums[l] + nums[r]));
-                    if (curr < diff)
+                    int currSum = (nums[i] + nums[l] + nums[r]);
+                    if (Math.Abs(currSum - target) < Math.Abs(closestSum - target))
                     {
-                        diff = curr;
-                        first = i; second = l; third = r;
+                        closestSum = currSum;
                     }
-                    if (curr == 0)
+
+                    if (currSum == target)
                     {
-                        return nums[first] + nums[second] + nums[third];
+                        return currSum;
                     }
-                    else if (curr > 0)
+                    else if (currSum < target)
                     {
                         l++;
                     }
                     else
                     {
-                        r++;
+                        r--;
                     }
                 }
             }
 
-            return nums[first] + nums[second] + nums[third];
+            return closestSum;
         }
 
 
